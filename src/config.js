@@ -14,6 +14,6 @@ export const Config = {
   AB_TEST_ENABLED: process.env.AB_TEST_ENABLED,
   FAKE_ANALYTICS: process.env.FAKE_ANALYTICS,
   MOBILE_FLOW_ID: process.env.MOBILE_FLOW_ID,
-  MOBILE_API_KEY: process.env.MOBILE_API_KEY 
+  MOBILE_API_KEY: process.env.MOBILE_API_KEY
 }
 export default Config

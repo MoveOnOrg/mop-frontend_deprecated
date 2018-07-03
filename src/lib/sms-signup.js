@@ -3,7 +3,6 @@ import Config from '../config'
 
 export function smsSignUp(phoneNo) {
   if (Config.AB_TEST_ENABLED && Config.MOBILE_API_KEY) {
-    console.log('phone no being sent:', phoneNo);
     const msisdns = phoneNo
     const mobileFlowId = Config.MOBILE_FLOW_ID
     const mobileApiKey = Config.MOBILE_API_KEY
@@ -23,7 +22,6 @@ export function smsSignUp(phoneNo) {
 
     fetch('https://mobile.reverehq.com/api/v1/messaging/sendContent', options)
     .then(response => {
-      console.log('response:', response);
       if (response.status === '201') console.info('user added to sms list')
     }, error => {
       if (error) throw new Error(error)
