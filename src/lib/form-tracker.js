@@ -167,6 +167,22 @@ export function FormTracker({ experiment = '', formvariant = '', variationname =
   this.getState = function getState() {
     return this.state
   }
+
+  /**
+   * Sets the FormTracker's internal state, (e.g. after resuming a multipart form).
+   * you can get this state from getState()
+   *
+   * Internally remembers the state has been set, so it's safe to call multiple times
+   * (e.g. various lifecycle methods), if it is unclear when your data will be loaded (redux)
+   * @param {object} state - the internal state to set
+   */
+  this.setStateOnce = function setStateOnce(state) {
+    if (state && !this.options.setStateCalled) {
+      this.state = { ...state }
+      this.options.setStateCalled = true
+    }
+  }
+
   /**
    * @private
    * Tracks the internal state to segment
@@ -180,6 +196,7 @@ export function FormTracker({ experiment = '', formvariant = '', variationname =
     }
     if (Config.FAKE_ANALYTICS) {
       console.log(`Tracking event ${eventName} with current state object: ${JSON.stringify(this.state)} `)
+      // console.log(`INSERT INTO tracking_test (eventname,${Object.keys(this.state).join(',')}) VALUES ("${eventName}",${Object.values(this.state).map(JSON.stringify).join(',')})`)
     }
   }
 }
