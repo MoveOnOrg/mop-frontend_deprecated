@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import LoginForm from 'Theme/login-form'
+import LoginFormMaterial from '../components/theme-giraffe/create-petition/login-form'
 
 import { actions as accountActions } from '../actions/accountActions'
 import { appLocation } from '../routes'
@@ -16,13 +17,29 @@ class Login extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.errorList = this.errorList.bind(this)
+    this.getFields = this.getFields.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.formErrors.length) {
       this.setState({ presubmitErrors: null })
-      this.password.value = ''
+      if (!this.props.useMaterialDesign) this.password.value = ''
     }
+  }
+
+  getFields() {
+    const material = this.props.useMaterialDesign
+    const { email, password } = material ? this.props : this
+    let fields = {}
+    if (material) {
+      fields = { email, password }
+    } else {
+      fields = {
+        email: email.value,
+        password: password.value
+      }
+    }
+    return fields
   }
 
   /**
@@ -32,16 +49,16 @@ class Login extends React.Component {
    * @returns {boolean}
    */
   validateForm() {
-    const { email, password } = this
+    const { email, password } = this.getFields()
     const errors = []
-    if (!isValidEmail(email.value)) {
-      if (!this.email.value.trim().length) {
+    if (!isValidEmail(email)) {
+      if (!email.trim().length) {
         errors.push({ message: 'Missing required entry for the Email field.' })
       } else {
         errors.push({ message: 'Invalid entry for the Email field.' })
       }
     }
-    if (!password.value.trim().length) {
+    if (!password.trim().length) {
       errors.push({ message: 'Missing required entry for the Password field.' })
     }
     if (errors.length) {
@@ -63,21 +80,29 @@ class Login extends React.Component {
     event.preventDefault()
     if (!this.validateForm()) return
 
-    const fields = {
-      email: this.email.value,
-      password: this.password.value
-    }
     const { dispatch, location } = this.props
 
     let successCallback = this.props.successCallback
     if (location.query.redirect) {
       successCallback = () => appLocation.push(location.query.redirect)
     }
-
-    dispatch(accountActions.login(fields, successCallback))
+    dispatch(accountActions.login(this.getFields(), successCallback))
   }
 
   render() {
+    if (this.props.useMaterialDesign) {
+      return (
+        <LoginFormMaterial
+          errorList={this.errorList}
+          handleSubmit={this.handleSubmit}
+          updateStateFromValue={this.props.updateStateFromValue}
+          type={this.props.type}
+          getStateValue={this.props.getStateValue}
+          useMaterialDesign='true'
+          isSubmitting={this.props.isSubmitting}
+        />
+      )
+    }
     return (
       <div className='moveon-petitions'>
         <LoginForm
@@ -93,7 +118,8 @@ class Login extends React.Component {
 }
 
 Login.defaultProps = {
-  successCallback: () => appLocation.push('/dashboard.html')
+  successCallback: () => appLocation.push('/dashboard.html'),
+  location: { query: {} }
 }
 
 Login.propTypes = {
@@ -101,7 +127,11 @@ Login.propTypes = {
   dispatch: PropTypes.func,
   location: PropTypes.object,
   isSubmitting: PropTypes.bool,
-  successCallback: PropTypes.func
+  successCallback: PropTypes.func,
+  useMaterialDesign: PropTypes.bool,
+  updateStateFromValue: PropTypes.func,
+  type: PropTypes.string,
+  getStateValue: PropTypes.func
 }
 
 function mapStateToProps({ userStore = {} }) {

@@ -7,7 +7,7 @@ import { createMockStore } from 'redux-test-utils'
 import { mount } from 'enzyme'
 
 import CreateRevise from '../../src/containers/create-revise'
-import { CreatePetition } from '../../src/containers/create-petition'
+import { CreatePetition } from '../../src/containers/create-petition-legacy'
 
 
 describe('<CreateRevise />', () => {

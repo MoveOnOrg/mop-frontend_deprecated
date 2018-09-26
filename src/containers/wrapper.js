@@ -56,6 +56,9 @@ class Wrapper extends React.Component {
       <WrapperComponent
         entity={entity}
         minimalNav={hasRouteBool('minimalNav', routes)}
+        hideNav={hasRouteBool('hideNav', routes)}
+        hideFooter={hasRouteBool('hideFooter', routes)}
+        offWhiteBg={hasRouteBool('offWhiteBg', routes)}
       >
         {error.response_code === 404 && <Error404 error={error} />}
         {error.response_code === 500 && <Error500 error={error} />}

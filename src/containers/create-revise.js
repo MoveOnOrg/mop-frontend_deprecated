@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { appLocation } from '../routes'
-import CreatePetition from './create-petition'
+import CreatePetition from './create-petition-legacy'
 
 class CreateRevise extends React.Component {
   componentDidMount() {

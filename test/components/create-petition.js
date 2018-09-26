@@ -10,7 +10,7 @@ import { mount, shallow } from 'enzyme'
 
 import CreatePetition, {
   CreatePetition as CreatePetitionUnwrapped
-} from '../../src/containers/create-petition'
+} from '../../src/containers/create-petition-legacy'
 
 
 describe('<CreatePetition />', () => {

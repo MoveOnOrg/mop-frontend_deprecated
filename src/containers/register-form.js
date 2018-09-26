@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import RegisterForm from 'Theme/register-form'
+import RegisterFormMaterial from '../components/theme-giraffe/create-petition/register-form'
 
 import Config from '../config'
 import { register, devLocalRegister } from '../actions/accountActions'
@@ -17,44 +18,68 @@ class Register extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.validateForm = this.validateForm.bind(this)
+    this.getFields = this.getFields.bind(this)
     this.errorList = this.errorList.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.formErrors.length) {
       this.setState({ presubmitErrors: null })
-      this.password.value = ''
-      this.passwordConfirm.value = ''
+      if (!this.props.useMaterialDesign) {
+        this.password.value = ''
+        this.passwordConfirm.value = ''
+      }
     }
   }
 
-  /**
-   * Validates the form for client side errors.
-   * If valid returns true otherwise false.
-   * If errors it will update the local state `presubmitErrors`
-   * @returns {boolean}
-   */
+  getFields() {
+    const material = this.props.useMaterialDesign
+    const { name, email, password, passwordConfirm, zip, phone } = material ? this.props : this
+    let fields = {}
+    if (material) {
+      fields = {
+        name,
+        email,
+        zip,
+        password,
+        passwordConfirm
+      }
+    } else {
+      fields = {
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        passwordConfirm: passwordConfirm.value
+      }
+      if (this.props.includeZipAndPhone) {
+        fields.zip = zip.value
+        fields.phone = phone.value
+      }
+    }
+    return fields
+  }
+
   validateForm() {
-    const { name, email, password, passwordConfirm, zip } = this
+    const { name, email, password, passwordConfirm, zip } = this.getFields()
     const errors = []
-    if (!name.value.trim().length) {
+    if (!name.trim().length) {
       errors.push({ message: 'Missing required entry for the Name field.' })
     }
-    if (!isValidEmail(email.value)) {
-      if (!this.email.value.trim().length) {
+    if (!isValidEmail(email)) {
+      if (!email.trim().length) {
         errors.push({ message: 'Missing required entry for the Email field.' })
       } else {
         errors.push({ message: 'Invalid entry for the Email field.' })
       }
     }
-    if (!password.value.trim().length) {
+    if (!password.trim().length) {
       errors.push({ message: 'Missing required entry for the Password field.' })
-    } else if (password.value.trim() !== passwordConfirm.value.trim()) {
+    } else if (password.trim() !== passwordConfirm.trim()) {
       errors.push({
         message: 'Password and PasswordConfirm fields do not match.'
       })
     }
-    if (this.props.includeZipAndPhone && !zip.value.trim().length) {
+    if (this.props.includeZipAndPhone && !zip.trim().length) {
       errors.push({ message: 'Missing required entry for the ZIP Code field.' })
     }
     if (errors.length) {
@@ -66,22 +91,9 @@ class Register extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     const registerAction = Config.API_WRITABLE ? register : devLocalRegister
-
-    const { name, email, password, passwordConfirm, zip, phone } = this
     if (this.validateForm()) {
-      const fields = {
-        [name.name]: name.value,
-        [email.name]: email.value,
-        [password.name]: password.value,
-        [passwordConfirm.name]: passwordConfirm.value
-      }
-      if (this.props.includeZipAndPhone) {
-        fields[zip.name] = zip.value
-        fields[phone.name] = phone.value
-      }
-
       const { successCallback, isCreatingPetition, dispatch } = this.props
-      dispatch(registerAction(fields, { successCallback, isCreatingPetition }))
+      dispatch(registerAction(this.getFields(), { successCallback, isCreatingPetition }))
     }
   }
 
@@ -95,6 +107,18 @@ class Register extends React.Component {
   }
 
   render() {
+    if (this.props.useMaterialDesign) {
+      return (
+        <RegisterFormMaterial
+          errorList={this.errorList}
+          handleSubmit={this.handleSubmit}
+          updateStateFromValue={this.props.updateStateFromValue}
+          type={this.props.type}
+          getStateValue={this.props.getStateValue}
+          isSubmitting={this.props.isSubmitting}
+        />
+      )
+    }
     return (
       <RegisterForm
         errorList={this.errorList}
@@ -123,7 +147,11 @@ Register.propTypes = {
   useLaunchButton: PropTypes.bool,
   useAlternateFields: PropTypes.bool,
   successCallback: PropTypes.func,
-  isCreatingPetition: PropTypes.bool
+  isCreatingPetition: PropTypes.bool,
+  useMaterialDesign: PropTypes.bool,
+  updateStateFromValue: PropTypes.func,
+  type: PropTypes.string,
+  getStateValue: PropTypes.func
 }
 
 function mapStateToProps({ userStore = {}, petitionCreateStore = {} }) {

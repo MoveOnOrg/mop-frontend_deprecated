@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { actions as petitionActions } from '../actions/petitionActions'
 import { md5ToToken, stringifyParams } from '../lib'
+import Config from '../config'
 
 import ThanksComponent from 'Theme/thanks'
 import TwitterButton from 'Theme/twitter-button'
@@ -10,6 +11,7 @@ import FacebookButton from 'Theme/facebook-button'
 import MailButton from 'Theme/mail-button'
 import CopyPaste from 'Theme/copy-paste'
 import RawLink from 'Theme/raw-link'
+import Finished from 'GiraffeTheme/create-petition/finished'
 
 function getPre(fromSource, petition, isCreator) {
   let pre = (isCreator ? 'c' : 's')
@@ -137,6 +139,17 @@ class Thanks extends React.Component {
   }
 
   render() {
+    if (this.props.isCreator && Config.THEME === 'giraffe') {
+      return (
+        <Finished
+          renderTwitter={this.renderTwitter}
+          renderFacebook={this.renderFacebook}
+          renderMail={this.renderMail}
+          renderCopyPaste={this.renderCopyPaste}
+          renderRawLink={this.renderRawLink}
+        />
+      )
+    }
     return (
       <ThanksComponent
         sharedSocially={this.state.sharedSocially}
