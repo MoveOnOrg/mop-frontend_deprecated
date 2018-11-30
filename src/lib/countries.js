@@ -1,9 +1,18 @@
 export const countries = [
   'United States',
+  'American Samoa',
+  'Guam',
+  'Northern Mariana Islands',
+  'Puerto Rico',
+  'US Virgin Islands',
+]
+
+// These are excluded from countries list
+// to focus MoveOn, legally, on the USA.
+export const nonUScountries = [
   'Afghanistan',
   'Albania',
   'Algeria',
-  'American Samoa',
   'Andorra',
   'Angola',
   'Anguilla',
@@ -82,7 +91,6 @@ export const countries = [
   'Greenland',
   'Grenada',
   'Guadeloupe',
-  'Guam',
   'Guatemala',
   'Guinea',
   'Guinea-Bissau',
@@ -150,7 +158,6 @@ export const countries = [
   'Niger',
   'Nigeria',
   'North Korea',
-  'Northern Mariana Islands',
   'Norway',
   'Oman',
   'Pakistan',
@@ -163,7 +170,6 @@ export const countries = [
   'Philippines',
   'Poland',
   'Portugal',
-  'Puerto Rico',
   'Qatar',
   'Reunion',
   'Romania',
@@ -215,7 +221,6 @@ export const countries = [
   'United Kingdom',
   'United States',
   'Uruguay',
-  'US Virgin Islands',
   'Uzbekistan',
   'Vanuatu',
   'Vatican',
