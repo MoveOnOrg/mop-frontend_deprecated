@@ -4,7 +4,7 @@ export const countries = [
   'Guam',
   'Northern Mariana Islands',
   'Puerto Rico',
-  'US Virgin Islands',
+  'US Virgin Islands'
 ]
 
 // These are excluded from countries list
