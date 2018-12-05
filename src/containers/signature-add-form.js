@@ -255,7 +255,6 @@ class SignatureAddForm extends React.Component {
       requireAddressFields,
       showOptinCheckbox,
       showOptinWarning,
-      showMobileSignup,
       setRef,
       innerRef,
       id
@@ -271,7 +270,6 @@ class SignatureAddForm extends React.Component {
         user={user}
         query={query}
         showAddressFields={showAddressFields}
-        showMobileSignup={!!showMobileSignup}
         requireAddressFields={requireAddressFields}
         onUnrecognize={() => { dispatch(sessionActions.unRecognize()) }}
         volunteer={this.state.volunteer}
@@ -310,7 +308,6 @@ SignatureAddForm.propTypes = {
   showOptinWarning: PropTypes.bool,
   showOptinCheckbox: PropTypes.bool,
   hiddenOptin: PropTypes.bool,
-  showMobileSignup: PropTypes.bool,
   setRef: PropTypes.func,
   innerRef: PropTypes.func,
   id: PropTypes.string
@@ -322,13 +319,6 @@ function shouldShowAddressFields(user, petition) {
   const userHasAddress = user.postal_addresses && user.postal_addresses.length
 
   if (petition.needs_full_addresses && !userHasAddress) {
-    return true
-  }
-  return false
-}
-
-function shouldShowMobileSignUp(queryString) {
-  if (queryString.cohort === '1') {
     return true
   }
   return false
@@ -346,7 +336,6 @@ function mapStateToProps(store, ownProps) {
     requireAddressFields: petition.needs_full_addresses && shouldShowAddressFields(user, petition),
     fromCreator: (/^c\./.test(source) || /^s\.icn/.test(source)),
     fromMailing: /\.imn/.test(source),
-    showMobileSignup: shouldShowMobileSignUp(query)
   }
   newProps.showOptinWarning = !!(!user.signonId && (creator.source
                                                     || (creator.custom_fields && creator.custom_fields.may_optin)))

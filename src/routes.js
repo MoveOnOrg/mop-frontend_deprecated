@@ -89,6 +89,8 @@ export const routes = store => {
     }
   }
 
+  // can be used to divide users into random cohorts
+  // previously used for mobile field test : https://github.com/MoveOnOrg/mop-frontend/issues/512
   const testFn = () => {
     const cohort = (Math.random() > 0.5 ? 1 : 2)
     if (Config.AB_TEST_ENABLED) {
@@ -124,7 +126,7 @@ export const routes = store => {
           petitionName is a slugified name, matching the slugified "name" returned by the api.
       */}
 
-      <Route path='sign/:petitionName' component={Sign} mobileTest={testFn()} prodReady />
+      <Route path='sign/:petitionName' component={Sign} prodReady />
       <Route path=':organization/sign/:petitionName' component={Sign} onEnter={orgLoader} prodReady />
 
       <Route path='pac/' component={LoadablePacHome} prodReady />

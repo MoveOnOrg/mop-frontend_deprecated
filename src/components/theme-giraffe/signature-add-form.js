@@ -22,7 +22,6 @@ const SignatureAddForm = ({
   thirdPartyOptin,
   displayMobileOptIn,
   showAddressFields,
-  showMobileSignup,
   requireAddressFields,
   onUnrecognize,
   updateStateFromValue,
@@ -64,7 +63,7 @@ const SignatureAddForm = ({
 
     {(!hideUntilInteract && showAddressFields) ? (
       <div>
-        {(showMobileSignup && !user.signonId) ?
+        {!user.signonId ?
           <MobileSubscribe
             className='mobile_subscribe'
             showBox={!!displayMobileOptIn}
@@ -122,7 +121,7 @@ const SignatureAddForm = ({
     ) : (
       ''
     )}
-    {(showMobileSignup && user.signonId) ?
+    {user.signonId ?
       <MobileSubscribe
         className='mobile_subscribe'
         showBox={!!displayMobileOptIn}
@@ -204,7 +203,6 @@ SignatureAddForm.propTypes = {
   petition: PropTypes.object.isRequired,
   user: PropTypes.object,
   showAddressFields: PropTypes.bool,
-  showMobileSignup: PropTypes.bool,
   requireAddressFields: PropTypes.bool,
   creator: PropTypes.object,
   onUnrecognize: PropTypes.func,

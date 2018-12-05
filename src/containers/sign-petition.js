@@ -109,7 +109,6 @@ class SignPetition extends React.Component {
 
   render() {
     const p = this.props.petition
-    const mobileTest = this.props.route.mobileTest
     if (!p) {
       return <div />
     }
@@ -131,7 +130,6 @@ class SignPetition extends React.Component {
           hideFloatingSign={() => this.setState({ floatingSignVisible: false })}
           showFloatingSign={() => this.setState({ floatingSignVisible: true })}
           setRef={this.setRef}
-          mobileTest={mobileTest}
         />
       </div>
     )
