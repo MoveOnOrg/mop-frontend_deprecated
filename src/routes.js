@@ -89,8 +89,14 @@ export const routes = store => {
     }
   }
 
-  // can be used to divide users into random cohorts
-  // previously used for mobile field test : https://github.com/MoveOnOrg/mop-frontend/issues/512
+  /**
+    * testFn can be used to be passed to a router in order to change the url string.
+    * testFn will randomly divide users into cohort=1 or cohort=2 when AB_TEST_ENABLED
+    * equals a value.
+    *
+    * Further documentation: docs/EXPLANATION--cohort-testing.md
+    * Originally built for mobile field test: https://github.com/MoveOnOrg/mop-frontend/issues/512
+
   const testFn = () => {
     const cohort = (Math.random() > 0.5 ? 1 : 2)
     if (Config.AB_TEST_ENABLED) {
@@ -103,7 +109,7 @@ export const routes = store => {
         // makes sure it only does it on sign pages and
         // only triggers if you land directly on sign page vs through source
         // checks if there is a cohort already in the querystring so it doesnt add another cohort
-        if (/sign/.test(pathName) && /sms/.test(queryString) && !/cohort/.test(queryString)) {
+        if (/sign/.test(pathName) && !/cohort/.test(queryString)) {
           const preChar = /\?/.test(currentLocation.search) ? '&' : '?'
           browserHistory.push(`${pathName}${currentLocation.search}${preChar}cohort=${cohort}`)
         }
@@ -111,6 +117,7 @@ export const routes = store => {
     }
     return cohort
   }
+    **/
 
   const onChange = () => {
     store.dispatch(clearError()) // Stop showing any error page

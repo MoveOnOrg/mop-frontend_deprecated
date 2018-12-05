@@ -141,8 +141,7 @@ SignPetition.propTypes = {
   user: PropTypes.object,
   params: PropTypes.object,
   location: PropTypes.object,
-  dispatch: PropTypes.func,
-  route: PropTypes.object
+  dispatch: PropTypes.func
 }
 
 function mapStateToProps(store, ownProps) {
