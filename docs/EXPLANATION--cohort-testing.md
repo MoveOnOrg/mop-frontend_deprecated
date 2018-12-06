@@ -1,10 +1,20 @@
 # Testing Actions By Dividing Users into Cohorts
 
 ## Purpose
-If you are creating a test to decide whether a change to the petition experience should be changed, and want to show random users the changed version (or the control), you can use cohorts.
+If you are creating a test to decide whether a change to the petition experience should happen, and want to show random users the changed version (or the control), you can use cohorts.
 
 Code points:
-[testFn](https://github.com/MoveOnOrg/mop-frontend/blob/main/src/containers/routes.js#L100)
+[testFn code](https://github.com/MoveOnOrg/mop-frontend/blob/main/src/containers/routes.js#L100)
+
+## How to Use Cohorts
+
+Previously, `testFn` was used to determine random cohorts for a mobile field test. The function was passed into a property `mobileTest` for '/sign:petitionName' route.
+
+```
+<Route path='sign/:petitionName' component={Sign} mobileTest={testFn()} prodReady />
+```
+
+Then we could use it's presence in the props or by directly checking in the query string for cohort, whether or not to display the control or changed version.
 
 ## Past Tests
 

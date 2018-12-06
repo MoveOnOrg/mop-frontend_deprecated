@@ -89,7 +89,7 @@ export const routes = store => {
     }
   }
 
-  /**
+    /*
     * testFn can be used to be passed to a router in order to change the url string.
     * testFn will randomly divide users into cohort=1 or cohort=2 when AB_TEST_ENABLED
     * equals a value.
@@ -117,7 +117,7 @@ export const routes = store => {
     }
     return cohort
   }
-    **/
+    */
 
   const onChange = () => {
     store.dispatch(clearError()) // Stop showing any error page
