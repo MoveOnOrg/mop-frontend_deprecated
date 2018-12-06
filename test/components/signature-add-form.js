@@ -358,6 +358,20 @@ describe('<SignatureAddForm />', () => {
       expect(context.find('input[name="mobile_optin"]').length).to.equal(1)
     })
 
+    it('sends opt in and revere mobile flow id to api when dynamic_sms_flow is true', () => {
+      if (process.env.THEME !== 'giraffe') return
+      const store = createMockStore(storeAnonymous)
+      const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
+      const component = unwrapReduxComponent(context).instance()
+
+      component.setState({ address1: '123 main', city: 'Pittsburgh', state: 'PA', name: 'John Smith', email: 'hi@example.com', zip: '60024', phone: '2165555555', mobile_optin: true, dynamic_sms_flow: 'fakeflowhash' })
+      const osdiSignature = component.getOsdiSignature()
+
+      expect(osdiSignature.person.custom_fields.mobile_optin).to.be.true
+      expect(osdiSignature.person.phone_numbers[0]).to.be.equal('2165555555')
+      expect(osdiSignature.person.custom_fields.dynamic_sms_flow).to.be.equal('fakeflowhash')
+    })
+
     it('sends opt in to api when mobile_optin is true and phone number is filled', () => {
       if (process.env.THEME !== 'giraffe') { return }
 
