@@ -45,9 +45,9 @@ class SignatureAddForm extends React.Component {
     this.validationError = this.validationError.bind(this)
     this.updateStateFromValue = this.updateStateFromValue.bind(this)
     this.formTracker = new FormTracker({
-      experiment: (props.query.cohort ? 'signMobilePhones1' : 'current'),
+      experiment: 'current',
       formvariant: props.id,
-      variationname: (props.query.cohort === '1' ? 'smsSubScribeOption1' : 'current')
+      variationname: 'current'
     })
   }
 
