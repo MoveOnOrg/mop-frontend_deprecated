@@ -8,7 +8,7 @@ Code points:
 
 ## How to Use Cohorts
 
-Previously, `testFn` was used to determine random cohorts for a mobile field test. The function was passed into a property `mobileTest` for '/sign:petitionName' route.
+If `AB_TEST_ENABLED` is set to a value, you could use `testFn` in order to break someone who visits the petition signature page (or reloads it) into random cohorts for a mobile field test. The function was passed into a property `mobileTest` for '/sign:petitionName' route.
 
 ```
 <Route path='sign/:petitionName' component={Sign} mobileTest={testFn()} prodReady />
