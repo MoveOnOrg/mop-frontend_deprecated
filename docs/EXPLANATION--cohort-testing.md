@@ -4,14 +4,14 @@
 If you are creating a test to decide whether a change to the petition experience should happen, and want to show random users the changed version (or the control), you can use cohorts.
 
 Code points:
-[testFn code](https://github.com/MoveOnOrg/mop-frontend/blob/main/src/containers/routes.js#L100)
+[routeCohortSplitter code](https://github.com/MoveOnOrg/mop-frontend/blob/main/src/containers/routes.js#L100)
 
 ## How to Use Cohorts
 
-If `AB_TEST_ENABLED` is set to a value, you could use `testFn` in order to break someone who visits the petition signature page (or reloads it) into random cohorts for a mobile field test. The function was passed into a property `mobileTest` for '/sign:petitionName' route.
+If `AB_TEST_ENABLED` is set to a value, you could use `routeCohortSplitter(cohortQueryText)` in order to break someone who visits the petition signature page (or reloads it) into random cohorts for a mobile field test. The function was passed into a property `mobileTest` for '/sign:petitionName' route.
 
 ```
-<Route path='sign/:petitionName' component={Sign} mobileTest={testFn()} prodReady />
+<Route path='sign/:petitionName' component={Sign} mobileTest={routeCohortSplitter(cohortQueryText)} prodReady />
 ```
 
 Then we could use it's presence in the props or by directly checking in the query string for cohort, whether or not to display the control or changed version.

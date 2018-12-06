@@ -90,14 +90,15 @@ export const routes = store => {
   }
 
     /*
-    * testFn can be used to be passed to a router in order to change the url string.
-    * testFn will randomly divide users into cohort=1 or cohort=2 when AB_TEST_ENABLED
+    * routeCohortSplitter can be used to be passed to a router in order to change the url string.
+    * routeCohortSplitter will randomly divide users into cohort=1 or cohort=2 when AB_TEST_ENABLED
     * equals a value.
-    *
-    * Further documentation: docs/EXPLANATION--cohort-testing.md
+    * Add <Route path='....' cohort={routeCohortSplitter()} /> to enable cohorts for a route below.
     * Originally built for mobile field test: https://github.com/MoveOnOrg/mop-frontend/issues/512
+    * Further documentation: docs/EXPLANATION--cohort-testing.md
 
-  const testFn = () => {
+  const routeCohortSplitter = (cohortQueryText) => {
+    const addCohortQuery = (new Regex(cohortQueryText)).test(queryString)
     const cohort = (Math.random() > 0.5 ? 1 : 2)
     if (Config.AB_TEST_ENABLED) {
       const currentLocation = window.location
@@ -109,7 +110,7 @@ export const routes = store => {
         // makes sure it only does it on sign pages and
         // only triggers if you land directly on sign page vs through source
         // checks if there is a cohort already in the querystring so it doesnt add another cohort
-        if (/sign/.test(pathName) && !/cohort/.test(queryString)) {
+        if (/sign/.test(pathName) && addCohortQuery && !/cohort/.test(queryString)) {
           const preChar = /\?/.test(currentLocation.search) ? '&' : '?'
           browserHistory.push(`${pathName}${currentLocation.search}${preChar}cohort=${cohort}`)
         }
