@@ -31,7 +31,8 @@ class SignatureAddForm extends React.Component {
       thirdparty_optin: props.hiddenOptin || props.showOptinCheckbox,
       hidden_optin: props.hiddenOptin,
       required: {},
-      hideUntilInteract: true
+      hideUntilInteract: true,
+      dynamic_sms_flow: props.query.sms || false
     }
     this.validationFunction = {
       email: isValidEmail,
@@ -59,6 +60,7 @@ class SignatureAddForm extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const ref = this.form
+    console.log('activate_dynamic_sms', this.state);
 
     if (ref && this.formTracker.isVisible(ref)) {
       if (!this.state.hideUntilInteract) this.formTracker.setForm(ref, ref.id)
