@@ -60,7 +60,6 @@ class SignatureAddForm extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const ref = this.form
-    console.log('activate_dynamic_sms', this.state);
 
     if (ref && this.formTracker.isVisible(ref)) {
       if (!this.state.hideUntilInteract) this.formTracker.setForm(ref, ref.id)
@@ -125,7 +124,7 @@ class SignatureAddForm extends React.Component {
     if (referrerData.length) {
       osdiSignature.referrer_data = Object.assign({}, ...referrerData)
     }
-    const customFields = ['thirdparty_optin', 'hidden_optin', 'volunteer', 'mobile_optin']
+    const customFields = ['thirdparty_optin', 'hidden_optin', 'volunteer', 'mobile_optin', 'dynamic_sms_flow']
     const customData = customFields.filter(k => this.state[k]).map(k => ({ [k]: this.state[k] }))
     if (customData.length) {
       osdiSignature.person.custom_fields = Object.assign({}, ...customData)
