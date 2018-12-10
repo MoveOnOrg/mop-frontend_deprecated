@@ -44,6 +44,7 @@ class SignatureAddForm extends React.Component {
     this.submit = this.submit.bind(this)
     this.validationError = this.validationError.bind(this)
     this.updateStateFromValue = this.updateStateFromValue.bind(this)
+    this.updateValueFromState = this.updateValueFromState.bind(this)
     this.formTracker = new FormTracker({
       experiment: 'current',
       formvariant: props.id,
@@ -153,6 +154,13 @@ class SignatureAddForm extends React.Component {
                 && (!this.validationFunction[key]
                     || this.validationFunction[key](String(this.state[key]))))
     ).reduce((a, b) => a && b, true)
+  }
+
+  updateValueFromState(field) {
+    if (this.state[field]) {
+      return this.state[field]
+    }
+    return this.state[field]
   }
 
   updateStateFromValue(field, isCheckbox = false) {
@@ -279,6 +287,7 @@ class SignatureAddForm extends React.Component {
         country={this.state.country}
         onChangeCountry={event => this.setState({ country: event.target.value })}
         updateStateFromValue={this.updateStateFromValue}
+        updateValueFromState={this.updateValueFromState}
         validationError={this.validationError}
         showOptinWarning={showOptinWarning}
         showOptinCheckbox={showOptinCheckbox}

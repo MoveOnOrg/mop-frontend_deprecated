@@ -25,6 +25,7 @@ const SignatureAddForm = ({
   requireAddressFields,
   onUnrecognize,
   updateStateFromValue,
+  updateValueFromState,
   validationError,
   setRef,
   innerRef,
@@ -155,6 +156,7 @@ const SignatureAddForm = ({
         <InputBlock
           name='phone'
           label='Phone*'
+          value={updateValueFromState('phone')}
           onChange={updateStateFromValue('phone')}
           className='override-collapse'
         />
@@ -215,6 +217,7 @@ SignatureAddForm.propTypes = {
   country: PropTypes.string,
   onChangeCountry: PropTypes.func,
   updateStateFromValue: PropTypes.func,
+  updateValueFromState: PropTypes.func,
   validationError: PropTypes.func,
   setRef: PropTypes.func,
   innerRef: PropTypes.func,
