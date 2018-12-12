@@ -61,7 +61,7 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('displays only some fields at first (giraffe only)', () => {
-      if (process.env.THEME !== 'giraffe') return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
       const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
@@ -75,7 +75,7 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('shows more fields when a character is typed (giraffe only)', () => {
-      if (process.env.THEME !== 'giraffe') return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
       const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
@@ -337,7 +337,7 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('does not show a optin check box when mobile field isnt filled', () => {
-      if (process.env.THEME !== 'giraffe') return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
       const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
@@ -348,7 +348,7 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('shows an optin check box when mobile field has a value', () => {
-      if (process.env.THEME !== 'giraffe') return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
       const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
@@ -359,7 +359,7 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('sends opt in to api when mobile_optin is true and phone number is filled', () => {
-      if (process.env.THEME !== 'giraffe') return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
       const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
