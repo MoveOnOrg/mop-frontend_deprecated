@@ -359,7 +359,7 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('sends opt in and revere mobile flow id to api when dynamic_sms_flow is true', () => {
-      if (process.env.THEME !== 'giraffe') return
+      if (process.env.THEME !== 'giraffe') { return }
       const store = createMockStore(storeAnonymous)
       const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
       const component = unwrapReduxComponent(context).instance()
