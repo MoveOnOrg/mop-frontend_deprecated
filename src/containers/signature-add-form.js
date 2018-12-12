@@ -44,10 +44,11 @@ class SignatureAddForm extends React.Component {
     this.submit = this.submit.bind(this)
     this.validationError = this.validationError.bind(this)
     this.updateStateFromValue = this.updateStateFromValue.bind(this)
+    this.updateValueFromState = this.updateValueFromState.bind(this)
     this.formTracker = new FormTracker({
-      experiment: (props.query.cohort ? 'signMobilePhones1' : 'current'),
+      experiment: 'current',
       formvariant: props.id,
-      variationname: (props.query.cohort === '1' ? 'smsSubScribeOption1' : 'current')
+      variationname: 'current'
     })
   }
 
@@ -155,6 +156,10 @@ class SignatureAddForm extends React.Component {
     ).reduce((a, b) => a && b, true)
   }
 
+  updateValueFromState(field) {
+    return (this.state[field] ? this.state[field] : '')
+  }
+
   updateStateFromValue(field, isCheckbox = false) {
     return event => {
       const value = isCheckbox ? event.target.checked : event.target.value
@@ -255,7 +260,6 @@ class SignatureAddForm extends React.Component {
       requireAddressFields,
       showOptinCheckbox,
       showOptinWarning,
-      showMobileSignup,
       setRef,
       innerRef,
       id
@@ -271,7 +275,6 @@ class SignatureAddForm extends React.Component {
         user={user}
         query={query}
         showAddressFields={showAddressFields}
-        showMobileSignup={!!showMobileSignup}
         requireAddressFields={requireAddressFields}
         onUnrecognize={() => { dispatch(sessionActions.unRecognize()) }}
         volunteer={this.state.volunteer}
@@ -281,6 +284,7 @@ class SignatureAddForm extends React.Component {
         country={this.state.country}
         onChangeCountry={event => this.setState({ country: event.target.value })}
         updateStateFromValue={this.updateStateFromValue}
+        updateValueFromState={this.updateValueFromState}
         validationError={this.validationError}
         showOptinWarning={showOptinWarning}
         showOptinCheckbox={showOptinCheckbox}
@@ -310,7 +314,6 @@ SignatureAddForm.propTypes = {
   showOptinWarning: PropTypes.bool,
   showOptinCheckbox: PropTypes.bool,
   hiddenOptin: PropTypes.bool,
-  showMobileSignup: PropTypes.bool,
   setRef: PropTypes.func,
   innerRef: PropTypes.func,
   id: PropTypes.string
@@ -327,13 +330,6 @@ function shouldShowAddressFields(user, petition) {
   return false
 }
 
-function shouldShowMobileSignUp(queryString) {
-  if (queryString.cohort === '1') {
-    return true
-  }
-  return false
-}
-
 function mapStateToProps(store, ownProps) {
   const user = store.userStore
   const { petition, query } = ownProps
@@ -345,8 +341,7 @@ function mapStateToProps(store, ownProps) {
     showAddressFields: shouldShowAddressFields(user, petition),
     requireAddressFields: petition.needs_full_addresses && shouldShowAddressFields(user, petition),
     fromCreator: (/^c\./.test(source) || /^s\.icn/.test(source)),
-    fromMailing: /\.imn/.test(source),
-    showMobileSignup: shouldShowMobileSignUp(query)
+    fromMailing: /\.imn/.test(source)
   }
   newProps.showOptinWarning = !!(!user.signonId && (creator.source
                                                     || (creator.custom_fields && creator.custom_fields.may_optin)))
