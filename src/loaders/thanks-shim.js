@@ -29,6 +29,7 @@ class ThanksShim extends React.Component {
             petition={this.props.petition}
             signatureMessage={this.props.signatureMessage}
             fromSource={this.props.location.query.from_source}
+            showWhatsAppButton={this.props.showWhatsAppButton}
           />
           : ''
         )}
@@ -41,7 +42,8 @@ ThanksShim.propTypes = {
   petition: PropTypes.object,
   signatureMessage: PropTypes.object,
   dispatch: PropTypes.func,
-  location: PropTypes.object
+  location: PropTypes.object,
+  showWhatsAppButton: PropTypes.bool
 }
 
 function mapStateToProps(store, ownProps) {

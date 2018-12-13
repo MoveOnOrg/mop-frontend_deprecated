@@ -25,6 +25,7 @@ const Petition = ({
   petition: p,
   query,
   user,
+  showWhatsAppButton,
   adminLink,
   petitionBy,
   isFloatingSignVisible,
@@ -40,7 +41,7 @@ const Petition = ({
         heading={splitIntoSpansJsx(p.title)}
         currentSignatures={p.total_signatures}
         goalSignatures={p.signature_goal}
-        renderShare={<Share className='petition-card' user={user} petition={p} />}
+        renderShare={<Share className='petition-card' user={user} petition={p} showWhatsAppButton={showWhatsAppButton} />}
         renderSignersButton={({ className, CaretRight }) => (
           <Scrollchor
             className={className}
@@ -127,7 +128,8 @@ Petition.propTypes = {
   scrollToSignFormProps: PropTypes.func,
   isFloatingSignVisible: PropTypes.bool,
   hideFloatingSign: PropTypes.func,
-  showFloatingSign: PropTypes.func
+  showFloatingSign: PropTypes.func,
+  showWhatsAppButton: PropTypes.bool
 }
 
 export default Petition

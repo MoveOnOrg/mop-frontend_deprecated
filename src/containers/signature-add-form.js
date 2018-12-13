@@ -258,6 +258,7 @@ class SignatureAddForm extends React.Component {
       query,
       showAddressFields,
       requireAddressFields,
+      showWhatsAppButton,
       showOptinCheckbox,
       showOptinWarning,
       setRef,
@@ -276,6 +277,7 @@ class SignatureAddForm extends React.Component {
         query={query}
         showAddressFields={showAddressFields}
         requireAddressFields={requireAddressFields}
+        showWhatsAppButton={showWhatsAppButton}
         onUnrecognize={() => { dispatch(sessionActions.unRecognize()) }}
         volunteer={this.state.volunteer}
         onClickVolunteer={this.volunteer}
@@ -310,6 +312,7 @@ SignatureAddForm.propTypes = {
   dispatch: PropTypes.func,
   query: PropTypes.object,
   showAddressFields: PropTypes.bool,
+  showWhatsAppButton: PropTypes.bool,
   requireAddressFields: PropTypes.bool,
   showOptinWarning: PropTypes.bool,
   showOptinCheckbox: PropTypes.bool,
@@ -317,6 +320,10 @@ SignatureAddForm.propTypes = {
   setRef: PropTypes.func,
   innerRef: PropTypes.func,
   id: PropTypes.string
+}
+
+function shouldShowWhatsAppButton(cohort) {
+  return (!!cohort && cohort === '1')
 }
 
 function shouldShowAddressFields(user, petition) {
@@ -335,13 +342,15 @@ function mapStateToProps(store, ownProps) {
   const { petition, query } = ownProps
   const creator = ((petition._embedded && petition._embedded.creator) || {})
   const source = query.source || ''
+  const cohort = query.cohort || ''
 
   const newProps = {
     user,
     showAddressFields: shouldShowAddressFields(user, petition),
     requireAddressFields: petition.needs_full_addresses && shouldShowAddressFields(user, petition),
     fromCreator: (/^c\./.test(source) || /^s\.icn/.test(source)),
-    fromMailing: /\.imn/.test(source)
+    fromMailing: /\.imn/.test(source),
+    showWhatsAppButton: shouldShowWhatsAppButton(cohort)
   }
   newProps.showOptinWarning = !!(!user.signonId && (creator.source
                                                     || (creator.custom_fields && creator.custom_fields.may_optin)))

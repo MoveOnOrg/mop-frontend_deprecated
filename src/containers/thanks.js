@@ -40,7 +40,7 @@ function getTrackingParams(signatureMessage, user) {
 class Thanks extends React.Component {
   constructor(props) {
     super(props)
-    const { petition, fromSource, signatureMessage, user } = props
+    const { petition, fromSource, signatureMessage, user, showWhatsAppButton } = props
 
     this.trackingParams = getTrackingParams(signatureMessage, user)
     this.trackingParamsString = stringifyParams(this.trackingParams)
@@ -52,7 +52,8 @@ class Thanks extends React.Component {
 
     this.state = {
       sharedSocially: false,
-      pre: getPre(fromSource, petition, this.props.isCreator)
+      pre: getPre(fromSource, petition, this.props.isCreator),
+      whatsApp: showWhatsAppButton
     }
 
     this.recordShare = this.recordShare.bind(this)
@@ -78,6 +79,10 @@ class Thanks extends React.Component {
         source,
         this.props.user
       )
+  }
+
+  renderWhatsApp() {
+    return (this.state.whatsApp ? 'whats app rendered' : '')
   }
 
   renderTwitter() {
@@ -173,7 +178,8 @@ Thanks.propTypes = {
   fromSource: PropTypes.string,
   nextPetitionsLoaded: PropTypes.bool,
   nextPetition: PropTypes.object,
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  showWhatsAppButton: PropTypes.bool
 }
 
 Thanks.defaultProps = {
