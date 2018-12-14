@@ -12,6 +12,7 @@ export const InputBlock = ({
   className,
   setRef,
   placeholder,
+  value,
   ...rest
 }) => (
   <div
@@ -31,6 +32,7 @@ export const InputBlock = ({
         onChange={onChange}
         onBlur={onChange}
         ref={setRef}
+        value={value}
         {...rest}
       />
     )}

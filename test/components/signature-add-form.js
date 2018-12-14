@@ -61,7 +61,7 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('displays only some fields at first (giraffe only)', () => {
-      if (process.env.THEME !== 'giraffe') return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
       const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
@@ -75,7 +75,7 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('shows more fields when a character is typed (giraffe only)', () => {
-      if (process.env.THEME !== 'giraffe') return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
       const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
@@ -336,46 +336,11 @@ describe('<SignatureAddForm />', () => {
       expect(component.state.volunteer).to.be.equal(true)
     })
 
-    it('does not show mobile field when cohort query is not 1', () => {
-      if (process.env.THEME !== 'giraffe' && process.env.AB_TEST_ENABLED !== 10) return
-
-      const store = createMockStore(storeAnonymous)
-      const mobileTestBaseProf = { petition: outkastPetition, query: { cohort: '2' }, mobileTest: '2' }
-      const context = mount(<SignatureAddForm {...mobileTestBaseProf} store={store} />)
-      const component = unwrapReduxComponent(context).instance()
-
-      context.find('input[name="name"]').simulate('change', { target: { value: 'Jane Doe' } })
-
-      expect(Boolean(component.props.showMobileSignup)).to.be.false
-      expect(context.find('input[name="name"]').length).to.equal(1)
-      expect(context.find('input[name="email"]').length).to.equal(1)
-      expect(context.find('input[name="phone"]').length).to.equal(0)
-    })
-
-    it('shows mobile field when cohort query is 1', () => {
-      if (process.env.THEME !== 'giraffe' && process.env.AB_TEST_ENABLED !== 10) return
-
-      const store = createMockStore(storeAnonymous)
-      const mobileTestBaseProf = { petition: outkastPetition, query: { cohort: '1' }, mobileTest: '1' }
-      const context = mount(<SignatureAddForm {...mobileTestBaseProf} store={store} />)
-      const component = unwrapReduxComponent(context).instance()
-
-      context.find('input[name="name"]').simulate('change', { target: { value: 'Jane Doe' } })
-      expect(Boolean(component.props.showMobileSignup)).to.be.true
-      expect(context.find('input[name="name"]').length).to.equal(1)
-      expect(context.find('input[name="email"]').length).to.equal(1)
-      expect(context.find('input[name="phone"]').length).to.equal(1)
-      expect(context.find('input[name="address1"]').length).to.equal(1)
-      expect(context.find('input[name="address2"]').length).to.equal(1)
-      expect(context.find('input[name="city"]').length).to.equal(1)
-    })
-
     it('does not show a optin check box when mobile field isnt filled', () => {
-      if (process.env.THEME !== 'giraffe' && process.env.AB_TEST_ENABLED !== 10) return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
-      const mobileTestBaseProf = { petition: outkastPetition, query: { cohort: '1' }, mobileTest: '1' }
-      const context = mount(<SignatureAddForm {...mobileTestBaseProf} store={store} />)
+      const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
 
       context.find('input[name="name"]').simulate('change', { target: { value: 'Jane Doe' } })
       expect(context.find('input[name="phone"]').length).to.equal(1)
@@ -383,11 +348,10 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('shows an optin check box when mobile field has a value', () => {
-      if (process.env.THEME !== 'giraffe' && process.env.AB_TEST_ENABLED !== 10) return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
-      const mobileTestBaseProf = { petition: outkastPetition, query: { cohort: '1' }, mobileTest: '1' }
-      const context = mount(<SignatureAddForm {...mobileTestBaseProf} store={store} />)
+      const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
 
       context.find('input[name="name"]').simulate('change', { target: { value: 'Jane Doe' } })
       context.find('input[name="phone"]').simulate('change', { target: { value: '216' } })
@@ -395,11 +359,10 @@ describe('<SignatureAddForm />', () => {
     })
 
     it('sends opt in to api when mobile_optin is true and phone number is filled', () => {
-      if (process.env.THEME !== 'giraffe' && process.env.AB_TEST_ENABLED !== 10) return
+      if (process.env.THEME !== 'giraffe') { return }
 
       const store = createMockStore(storeAnonymous)
-      const mobileTestBaseProf = { petition: outkastPetition, query: { cohort: '1' }, mobileTest: '1' }
-      const context = mount(<SignatureAddForm {...mobileTestBaseProf} store={store} />)
+      const context = mount(<SignatureAddForm {...propsProfileBase} store={store} />)
       const component = unwrapReduxComponent(context).instance()
 
       component.setState({ address1: '123 main', city: 'Pittsburgh', state: 'PA', name: 'John Smith', email: 'hi@example.com', zip: '60024', phone: '2165555555', mobile_optin: true })

@@ -22,10 +22,10 @@ const SignatureAddForm = ({
   thirdPartyOptin,
   displayMobileOptIn,
   showAddressFields,
-  showMobileSignup,
   requireAddressFields,
   onUnrecognize,
   updateStateFromValue,
+  updateValueFromState,
   validationError,
   setRef,
   innerRef,
@@ -66,7 +66,7 @@ const SignatureAddForm = ({
 
     {(!hideUntilInteract && showAddressFields) ? (
       <div>
-        {(showMobileSignup && !user.signonId) ?
+        {!user.signonId ?
           <MobileSubscribe
             className='mobile_subscribe'
             showBox={!!displayMobileOptIn}
@@ -124,7 +124,7 @@ const SignatureAddForm = ({
     ) : (
       ''
     )}
-    {(showMobileSignup && user.signonId) ?
+    {user.signonId ?
       <MobileSubscribe
         className='mobile_subscribe'
         showBox={!!displayMobileOptIn}
@@ -158,6 +158,7 @@ const SignatureAddForm = ({
         <InputBlock
           name='phone'
           label='Phone*'
+          value={updateValueFromState('phone')}
           onChange={updateStateFromValue('phone')}
           className='override-collapse'
         />
@@ -206,7 +207,6 @@ SignatureAddForm.propTypes = {
   petition: PropTypes.object.isRequired,
   user: PropTypes.object,
   showAddressFields: PropTypes.bool,
-  showMobileSignup: PropTypes.bool,
   requireAddressFields: PropTypes.bool,
   creator: PropTypes.object,
   onUnrecognize: PropTypes.func,
@@ -219,6 +219,7 @@ SignatureAddForm.propTypes = {
   country: PropTypes.string,
   onChangeCountry: PropTypes.func,
   updateStateFromValue: PropTypes.func,
+  updateValueFromState: PropTypes.func,
   validationError: PropTypes.func,
   setRef: PropTypes.func,
   innerRef: PropTypes.func,
