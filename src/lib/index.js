@@ -116,13 +116,14 @@ try { RegExp('\\w', 'iu') } catch (err) { supportsUnicode = false }
 const userRegex = RegExp('^[-!#$%&\'*+/=?^_`{}|~\\w]+(\\.[-!#$%&\'*+/=?^_`{}|~\\w]+)*$', supportsUnicode ? 'iu' : 'i')
 const quotedUserRegex = /^"([\001-\010\013\014\016-\037!#-[\]-\177]|\\[\001-\011\013\014\016-\177])*"$/i
 const domainRegex = /^((?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+)(?:[A-Z0-9-]{1,62}[A-Z0-9])$/i
-const commonDomains = ['aol.com', 'comcast.net', 'gmail.com', 'hotmail.com', 'verizon.net', 'yahoo.com']
+const commonDomains = ['aol.com', 'comcast.net', 'gmail.com', 'hotmail.com',
+                       'icloud.com', 'outlook.com', 'verizon.net', 'yahoo.com']
 
 export const isValidEmail = email => {
   if (!email) { return false }
   const parts = email.split('@')
   if (parts.length !== 2) { return false }
-  const domain = parts[1]
+  const domain = parts[1].toLowerCase()
   if (!((userRegex.test(parts[0]) || quotedUserRegex.test(parts[0]))
         && domainRegex.test(domain))) {
     return false
