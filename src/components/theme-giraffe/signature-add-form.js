@@ -50,6 +50,7 @@ const SignatureAddForm = ({
           label='Name*'
           setRef={setRef}
           onChange={updateStateFromValue('name')}
+          onBlur={updateStateFromValue('name', false, /* validateNow= */ true)}
         />
         {validationError('name')}
         <InputBlock
@@ -57,6 +58,7 @@ const SignatureAddForm = ({
           name='email'
           label='Email*'
           onChange={updateStateFromValue('email')}
+          onBlur={updateStateFromValue('email', false, /* validateNow= */ true)}
         />
         {validationError('email')}
       </div>

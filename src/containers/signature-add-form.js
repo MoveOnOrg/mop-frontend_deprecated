@@ -132,12 +132,23 @@ class SignatureAddForm extends React.Component {
   }
 
   validationError(key) {
-    if (this.state.validationTried) {
-      if (Object.keys(this.state.required).indexOf(key) > -1) {
-        const func = this.validationFunction[key]
-        if (!this.state[key] || (func && !func(String(this.state[key])))) {
+    if (this.state.validationTried || this.state[`${key}Validated`]) {
+      const validFunc = this.validationFunction[key]
+      if (!this.state[key]) {
+        if (key in this.state.required) {
           return (
             <div className='alert alert-danger red' role='alert'>{this.state.required[key]}</div>
+          )
+        }
+      } else if (validFunc) {
+        const isValid = validFunc(String(this.state[key]))
+        if (isValid === false) {
+          return (
+            <div className='alert alert-danger red' role='alert'>Invalid input for {key}</div>
+          )
+        } else if (isValid && isValid.warning) {
+          return (
+            <div className='alert alert-danger red' role='alert'>{isValid.warning}</div>
           )
         }
       }
@@ -155,7 +166,7 @@ class SignatureAddForm extends React.Component {
     ).reduce((a, b) => a && b, true)
   }
 
-  updateStateFromValue(field, isCheckbox = false) {
+  updateStateFromValue(field, isCheckbox = false, validateNow = false) {
     return event => {
       const value = isCheckbox ? event.target.checked : event.target.value
       if (this.state[field] !== value) {
@@ -169,6 +180,9 @@ class SignatureAddForm extends React.Component {
         [field]: value,
         hideUntilInteract: false // show some hidden fields if they are hidden
       })
+      if (validateNow && value && this.validationFunction[field]) {
+        this.setState({ [`${field}Validated`]: true })
+      }
     }
   }
 

@@ -116,13 +116,33 @@ try { RegExp('\\w', 'iu') } catch (err) { supportsUnicode = false }
 const userRegex = RegExp('^[-!#$%&\'*+/=?^_`{}|~\\w]+(\\.[-!#$%&\'*+/=?^_`{}|~\\w]+)*$', supportsUnicode ? 'iu' : 'i')
 const quotedUserRegex = /^"([\001-\010\013\014\016-\037!#-[\]-\177]|\\[\001-\011\013\014\016-\177])*"$/i
 const domainRegex = /^((?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+)(?:[A-Z0-9-]{1,62}[A-Z0-9])$/i
+const commonDomains = ['aol.com', 'comcast.net', 'gmail.com', 'hotmail.com', 'verizon.net', 'yahoo.com']
 
 export const isValidEmail = email => {
   if (!email) { return false }
   const parts = email.split('@')
   if (parts.length !== 2) { return false }
-  return ((userRegex.test(parts[0]) || quotedUserRegex.test(parts[0]))
-          && domainRegex.test(parts[1]))
+  const domain = parts[1]
+  if (!((userRegex.test(parts[0]) || quotedUserRegex.test(parts[0]))
+        && domainRegex.test(domain))) {
+    return false
+  }
+  const rv = { validEmail: true }
+  // A poor-man's rubric for seeing if the domain is close to common domains:
+  // The length has to be equal or off-by-1
+  // and 80% of the commonDomain's letters must be in the domain
+  if (commonDomains.indexOf(domain) === -1) {
+    commonDomains.forEach(commonD => {
+      if (Math.abs(commonD.length - domain.length) < 2) {
+        const simLetters = commonD.split('')
+          .reduce((acc, curr) => (acc + (domain.indexOf(curr) > -1 ? 1 : 0)), 0)
+        if (simLetters / commonD.length > 0.8) {
+          rv.warning = `Did you mean ${commonD}?`
+        }
+      }
+    })
+  }
+  return rv
 }
 
 export const formatNumber = number =>
