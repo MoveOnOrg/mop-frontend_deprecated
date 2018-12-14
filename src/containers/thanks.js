@@ -8,6 +8,7 @@ import Config from '../config'
 import ThanksComponent from 'Theme/thanks'
 import TwitterButton from 'Theme/twitter-button'
 import FacebookButton from 'Theme/facebook-button'
+import WhatsAppButton from 'GiraffeTheme/whatsapp-button'
 import MailButton from 'Theme/mail-button'
 import CopyPaste from 'Theme/copy-paste'
 import RawLink from 'Theme/raw-link'
@@ -82,7 +83,7 @@ class Thanks extends React.Component {
   }
 
   renderWhatsApp() {
-    return (this.state.whatsApp ? 'whats app rendered' : '')
+    return (this.state.whatsApp ? <WhatsAppButton /> : '')
   }
 
   renderTwitter() {
@@ -160,6 +161,7 @@ class Thanks extends React.Component {
         sharedSocially={this.state.sharedSocially}
         isCreator={this.props.isCreator}
         renderTwitter={this.renderTwitter}
+        renderWhatsApp={this.renderWhatsApp}
         renderFacebook={this.renderFacebook}
         renderMail={this.renderMail}
         renderCopyPaste={this.renderCopyPaste}
