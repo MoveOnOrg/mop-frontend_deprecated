@@ -63,6 +63,7 @@ class Thanks extends React.Component {
     this.renderMail = this.renderMail.bind(this)
     this.renderCopyPaste = this.renderCopyPaste.bind(this)
     this.renderRawLink = this.renderRawLink.bind(this)
+    this.renderWhatsApp = this.renderWhatsApp.bind(this)
   }
 
   componentDidMount() {
