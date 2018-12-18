@@ -17,22 +17,12 @@ export function withWhatsApp(WrappedComponent) {
         shortLinkMode,
         ...shortLinkArgs
       )
-      const shareOpts =
-        (petition.share_options && petition.share_options[0]) || {}
-
-      let msg
-      if (shareOpts.whatsapp_share && shareOpts.whatsapp_share.message) {
-        msg = shareOpts.whatsapp_share.message.replace(
-          '[URL]',
-          whatsAppShareLink
-        )
-      } else {
         /* no message length limit for whatsapp */
-        const suffix = ` ${whatsAppShareLink}`
-        msg = `${petition.title} ${suffix}`
-      }
 
-      return msg
+      const suffix = `${whatsAppShareLink}`
+      const message = `Hi - I just signed this petition titled "${petition.title}" and I'm asking my friends to join me. Will you sign too? ${suffix}`
+
+      return message
     }
 
     shareWhatsApp() {
