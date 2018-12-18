@@ -82,12 +82,18 @@ class Thanks extends React.Component {
         this.props.user
       )
   }
-
+  /*
+  Explanation for values passed in shortLinkMode:
+  If it is the creator, we send in an arbitrary letter to denote if the user is a creator AND share medium
+  for example sending in a `w` will be read in the back end as `whatsapp_creator`
+  `wa` will be read as `whatsapp_signer`
+  short code modes are determined here: `/mop/petitions/petition_shortcode.py`
+  */
   renderWhatsApp() {
     return (this.state.whatsApp ?
       <WhatsAppButton
         petition={this.props.petition}
-        shortLinkMode={this.props.isCreator ? 'c' : 'w'}
+        shortLinkMode={this.props.isCreator ? 'w' : 'wa'}
         shortLinkArgs={this.shortLinkArgs}
         recordShare={this.recordShare('whatsapp', `${this.state.pre}.wa`)}
         afterShare={() => this.setState({ sharedSocially: true })}
