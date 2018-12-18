@@ -84,7 +84,15 @@ class Thanks extends React.Component {
   }
 
   renderWhatsApp() {
-    return (this.state.whatsApp ? <WhatsAppButton /> : '')
+    return (this.state.whatsApp ?
+      <WhatsAppButton
+        petition={this.props.petition}
+        shortLinkMode={this.props.isCreator ? 'c' : 't'}
+        shortLinkArgs={this.shortLinkArgs}
+        recordShare={this.recordShare('whatsapp', `${this.state.pre}.wa`)}
+        afterShare={() => this.setState({ sharedSocially: true })}
+      />
+      : '')
   }
 
   renderTwitter() {

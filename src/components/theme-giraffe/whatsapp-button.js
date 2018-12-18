@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { withTwitter } from '../../containers/hoc-twitter'
+import { withWhatsApp } from '../../containers/hoc-whatsapp'
 import TwitterSvg from 'GiraffeUI/svgs/twitter.svg'
 
 const WhatsAppButton = ({ onClick }) => (
@@ -15,4 +15,4 @@ WhatsAppButton.propTypes = {
   onClick: PropTypes.func
 }
 
-export default withTwitter(WhatsAppButton)
+export default withWhatsApp(WhatsAppButton)
