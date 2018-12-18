@@ -107,7 +107,7 @@ export const routes = store => {
         // makes sure it only does it on sign pages and
         // only triggers if you land directly on sign page vs through source
         // checks if there is a cohort already in the querystring so it doesnt add another cohort
-        if (/sign/.test(pathName) && /wa/.test(queryString) && !/cohort/.test(queryString)) {
+        if (/sign/.test(pathName) && /wapp/.test(queryString) && !/cohort/.test(queryString)) {
           const preChar = /\?/.test(currentLocation.search) ? '&' : '?'
           browserHistory.push(`${pathName}${currentLocation.search}${preChar}cohort=${cohort}`)
         }
