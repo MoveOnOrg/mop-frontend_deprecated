@@ -134,7 +134,7 @@ export const isValidEmail = email => {
   // and 80% of the commonDomain's letters must be in the domain
   if (commonDomains.indexOf(domain) === -1) {
     commonDomains.forEach(commonD => {
-      if (Math.abs(commonD.length - domain.length) < 2) {
+      if (!rv.warning && Math.abs(commonD.length - domain.length) < 2) {
         const simLetters = commonD.split('')
           .reduce((acc, curr) => (acc + (domain.indexOf(curr) > -1 ? 1 : 0)), 0)
         if (simLetters / commonD.length > 0.8) {
