@@ -27,7 +27,10 @@ export function withWhatsApp(WrappedComponent) {
 
     shareWhatsApp() {
       const encodedValue = encodeURIComponent(this.getWhatsAppText())
-      const url = `https://wa.me/?text=${encodedValue}`
+      const isFirefoxOrSafariDesktop = /Firefox/.test(navigator.userAgent) || /Safari/.test(navigator.userAgent)
+      const isMobileOrChromeDesktop = /iPhone/.test(navigator.userAgent) || /Chrome/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
+      const whatsAppDomain = ((isFirefoxOrSafariDesktop && !isMobileOrChromeDesktop) ? 'web.whatsapp.com' : 'wa.me')
+      const url = `https://${whatsAppDomain}/?text=${encodedValue}`
       window.open(url)
       const { recordShare, afterShare } = this.props
       if (recordShare) recordShare()
