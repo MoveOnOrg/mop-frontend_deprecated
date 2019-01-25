@@ -234,7 +234,7 @@ class SignatureAddForm extends React.Component {
 
   submit(event) {
     event.preventDefault()
-    const { dispatch, petition, query } = this.props
+    const { dispatch, petition } = this.props
     // In dev, by default, don't actually call the api
     const signAction = Config.API_WRITABLE ? signPetition : devLocalSignPetition
 

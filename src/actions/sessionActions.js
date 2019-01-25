@@ -124,7 +124,7 @@ export const loadCohort = location => {
   return dispatch => {
     dispatch({
       type: actionTypes.SESSION_COHORT_CHOICE,
-      cohort: cohort
+      cohort
     })
   }
 }

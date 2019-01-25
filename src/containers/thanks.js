@@ -53,7 +53,7 @@ class Thanks extends React.Component {
     this.state = {
       sharedSocially: false,
       pre: getPre(fromSource, petition, this.props.isCreator),
-      whatsApp: user.cohort === 1
+      whatsApp: (user && user.cohort === 1)
     }
 
     this.recordShare = this.recordShare.bind(this)
