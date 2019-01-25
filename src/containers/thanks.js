@@ -41,7 +41,7 @@ function getTrackingParams(signatureMessage, user) {
 class Thanks extends React.Component {
   constructor(props) {
     super(props)
-    const { petition, fromSource, signatureMessage, user, cohort } = props
+    const { petition, fromSource, signatureMessage, user } = props
     this.trackingParams = getTrackingParams(signatureMessage, user)
     this.trackingParamsString = stringifyParams(this.trackingParams)
 
@@ -53,7 +53,7 @@ class Thanks extends React.Component {
     this.state = {
       sharedSocially: false,
       pre: getPre(fromSource, petition, this.props.isCreator),
-      whatsApp: cohort
+      whatsApp: user.cohort === 1
     }
 
     this.recordShare = this.recordShare.bind(this)
@@ -194,8 +194,7 @@ Thanks.propTypes = {
   fromSource: PropTypes.string,
   nextPetitionsLoaded: PropTypes.bool,
   nextPetition: PropTypes.object,
-  dispatch: PropTypes.func,
-  cohort: PropTypes.bool
+  dispatch: PropTypes.func
 }
 
 Thanks.defaultProps = {
@@ -203,12 +202,12 @@ Thanks.defaultProps = {
 }
 
 function mapStateToProps(store) {
-  const { nextPetitionsLoaded, nextPetitions, petitions, cohort } = store.petitionStore
+  const { nextPetitionsLoaded, nextPetitions, petitions } = store.petitionStore
   let nextPetition = null
   if (nextPetitions && nextPetitions.length && nextPetitions[0]) {
     nextPetition = petitions[nextPetitions[0]]
   }
-  return { nextPetition, nextPetitionsLoaded, user: store.userStore, cohort }
+  return { nextPetition, nextPetitionsLoaded, user: store.userStore }
 }
 
 export default connect(mapStateToProps)(Thanks)
