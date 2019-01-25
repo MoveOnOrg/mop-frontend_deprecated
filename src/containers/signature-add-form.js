@@ -234,7 +234,7 @@ class SignatureAddForm extends React.Component {
 
   submit(event) {
     event.preventDefault()
-    const { dispatch, petition, query } = this.props
+    const { dispatch, petition } = this.props
     // In dev, by default, don't actually call the api
     const signAction = Config.API_WRITABLE ? signPetition : devLocalSignPetition
 
@@ -243,7 +243,7 @@ class SignatureAddForm extends React.Component {
         loginstate: (this.props.user.anonymous ? 0 : 1)
       })
       const osdiSignature = this.getOsdiSignature()
-      return dispatch(signAction(osdiSignature, petition, { redirectOnSuccess: true, cohort: query.cohort }))
+      return dispatch(signAction(osdiSignature, petition, { redirectOnSuccess: true }))
     }
     this.setState({ hideUntilInteract: false }) // show fields so we can show validation error
     this.formTracker.validationErrorTracker()

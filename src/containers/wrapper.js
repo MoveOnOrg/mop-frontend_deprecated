@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { scrollToTop } from '../lib'
-import { loadSession } from '../actions/sessionActions'
+import { loadSession, loadCohort } from '../actions/sessionActions'
 import { appLocation } from '../routes'
 import { checkServerError } from '../actions/serverErrorActions'
 
@@ -19,6 +19,7 @@ class Wrapper extends React.Component {
   componentDidMount() {
     this.props.dispatch(checkServerError())
     this.props.dispatch(loadSession(this.props.location))
+    this.props.dispatch(loadCohort(this.props.location))
   }
 
   componentDidUpdate() {

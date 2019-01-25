@@ -192,9 +192,6 @@ const signatureSuccess = (dispatch, response, petition, signature, options) => {
     petition,
     signature
   }
-  if (options && options.cohort === '1') {
-    dispatchData.cohort = true
-  }
   if (response && response.SendMessageResponse) {
     const sqsResponse = response.SendMessageResponse.SendMessageResult
     if (sqsResponse) {
