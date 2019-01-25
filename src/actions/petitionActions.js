@@ -110,7 +110,6 @@ export function searchPetitions(query, pageNumber, selectState) {
   }
 }
 
-
 export function loadTopPetitions(pac, megapartner, forceReload) {
   // topPetitionsKey must not just be truthily equal but exact
   // eslint-disable-next-line no-unneeded-ternary
@@ -192,6 +191,9 @@ const signatureSuccess = (dispatch, response, petition, signature, options) => {
     type: actionTypes.PETITION_SIGNATURE_SUCCESS,
     petition,
     signature
+  }
+  if (options && options.cohort === '1') {
+    dispatchData.cohort = true
   }
   if (response && response.SendMessageResponse) {
     const sqsResponse = response.SendMessageResponse.SendMessageResult

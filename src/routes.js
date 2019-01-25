@@ -130,11 +130,11 @@ export const routes = store => {
           petitionName is a slugified name, matching the slugified "name" returned by the api.
       */}
 
-      <Route path='sign/:petitionName' component={Sign} prodReady />
+      <Route path='sign/:petitionName' component={Sign} cohort={routeCohortSplitter()} prodReady />
       <Route path=':organization/sign/:petitionName' component={Sign} onEnter={orgLoader} prodReady />
 
       <Route path='pac/' component={LoadablePacHome} prodReady />
-      <Route path='thanks.html' component={ThanksShim} cohort={routeCohortSplitter()} prodReady minimalNav />
+      <Route path='thanks.html' component={ThanksShim} prodReady minimalNav />
       <Route path=':organization/thanks.html' component={ThanksShim} onEnter={orgLoader} prodReady minimalNav />
       <Route path='find' component={LoadableSearch} />
 

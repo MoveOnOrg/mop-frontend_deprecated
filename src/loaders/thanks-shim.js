@@ -29,7 +29,6 @@ class ThanksShim extends React.Component {
             petition={this.props.petition}
             signatureMessage={this.props.signatureMessage}
             fromSource={this.props.location.query.from_source}
-            showWhatsAppButton={this.props.routes[1].cohort === 1}
           />
           : ''
         )}
@@ -42,7 +41,6 @@ ThanksShim.propTypes = {
   petition: PropTypes.object,
   signatureMessage: PropTypes.object,
   dispatch: PropTypes.func,
-  routes: PropTypes.array,
   location: PropTypes.object
 }
 

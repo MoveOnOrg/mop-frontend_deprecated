@@ -234,7 +234,7 @@ class SignatureAddForm extends React.Component {
 
   submit(event) {
     event.preventDefault()
-    const { dispatch, petition } = this.props
+    const { dispatch, petition, query } = this.props
     // In dev, by default, don't actually call the api
     const signAction = Config.API_WRITABLE ? signPetition : devLocalSignPetition
 
@@ -243,7 +243,7 @@ class SignatureAddForm extends React.Component {
         loginstate: (this.props.user.anonymous ? 0 : 1)
       })
       const osdiSignature = this.getOsdiSignature()
-      return dispatch(signAction(osdiSignature, petition, { redirectOnSuccess: true }))
+      return dispatch(signAction(osdiSignature, petition, { redirectOnSuccess: true, cohort: query.cohort }))
     }
     this.setState({ hideUntilInteract: false }) // show fields so we can show validation error
     this.formTracker.validationErrorTracker()
@@ -258,7 +258,6 @@ class SignatureAddForm extends React.Component {
       query,
       showAddressFields,
       requireAddressFields,
-      showWhatsAppButton,
       showOptinCheckbox,
       showOptinWarning,
       setRef,
@@ -277,7 +276,6 @@ class SignatureAddForm extends React.Component {
         query={query}
         showAddressFields={showAddressFields}
         requireAddressFields={requireAddressFields}
-        showWhatsAppButton={showWhatsAppButton}
         onUnrecognize={() => { dispatch(sessionActions.unRecognize()) }}
         volunteer={this.state.volunteer}
         onClickVolunteer={this.volunteer}
@@ -312,7 +310,6 @@ SignatureAddForm.propTypes = {
   dispatch: PropTypes.func,
   query: PropTypes.object,
   showAddressFields: PropTypes.bool,
-  showWhatsAppButton: PropTypes.bool,
   requireAddressFields: PropTypes.bool,
   showOptinWarning: PropTypes.bool,
   showOptinCheckbox: PropTypes.bool,
@@ -320,10 +317,6 @@ SignatureAddForm.propTypes = {
   setRef: PropTypes.func,
   innerRef: PropTypes.func,
   id: PropTypes.string
-}
-
-function shouldShowWhatsAppButton(cohort) {
-  return (!!cohort && cohort === '1')
 }
 
 function shouldShowAddressFields(user, petition) {
@@ -342,15 +335,13 @@ function mapStateToProps(store, ownProps) {
   const { petition, query } = ownProps
   const creator = ((petition._embedded && petition._embedded.creator) || {})
   const source = query.source || ''
-  const cohort = query.cohort || ''
 
   const newProps = {
     user,
     showAddressFields: shouldShowAddressFields(user, petition),
     requireAddressFields: petition.needs_full_addresses && shouldShowAddressFields(user, petition),
     fromCreator: (/^c\./.test(source) || /^s\.icn/.test(source)),
-    fromMailing: /\.imn/.test(source),
-    showWhatsAppButton: shouldShowWhatsAppButton(cohort)
+    fromMailing: /\.imn/.test(source)
   }
   newProps.showOptinWarning = !!(!user.signonId && (creator.source
                                                     || (creator.custom_fields && creator.custom_fields.may_optin)))

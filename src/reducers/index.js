@@ -18,6 +18,7 @@ const initialPetitionState = {
   signatureMessages: {}, // Keyed by petition_id, MessageId value from SQS post
   topPetitions: {}, // Lists of petition IDs keyed by pac then megapartner
   nextPetitions: [], // List of petition IDs that can be suggested to sign next
+  cohort: false,
   nextPetitionsLoaded: false // Is nextPetitions empty because there are none to suggest or it hasn't been loaded yet?
 }
 
@@ -70,6 +71,11 @@ function petitionReducer(state = initialPetitionState, action) {
       }
       if (state.nextPetitionsLoaded) {
         updateData.nextPetitions = state.nextPetitions.filter(petId => petId !== petition.petition_id)
+      }
+      if (action.cohort) {
+        updateData = {
+          cohort: true
+        }
       }
       return {
         ...state,
