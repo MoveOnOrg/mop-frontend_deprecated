@@ -2,6 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { petitionShortCode } from '../lib'
 
+function getWhatsAppDomain() {
+  const isFirefoxOrSafari = /Firefox/.test(navigator.userAgent) || /Safari/.test(navigator.userAgent)
+  const isChrome = /Chrome/.test(navigator.userAgent)
+  const isMobile = /iPhone/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
+  let domain = ''
+  if (isFirefoxOrSafari && !isMobile && !isChrome) {
+    domain = 'web.whatsapp.com'
+  } else if (isChrome || (isFirefoxOrSafari && isMobile)) {
+    domain = 'wa.me'
+  }
+  return domain
+}
+
 export function withWhatsApp(WrappedComponent) {
   class WhatsApp extends React.Component {
     constructor(props) {
@@ -27,9 +40,7 @@ export function withWhatsApp(WrappedComponent) {
 
     shareWhatsApp() {
       const encodedValue = encodeURIComponent(this.getWhatsAppText())
-      const isFirefoxOrSafariDesktop = /Firefox/.test(navigator.userAgent) || /Safari/.test(navigator.userAgent)
-      const isMobileOrChromeDesktop = /iPhone/.test(navigator.userAgent) || /Chrome/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
-      const whatsAppDomain = ((isFirefoxOrSafariDesktop && !isMobileOrChromeDesktop) ? 'web.whatsapp.com' : 'wa.me')
+      const whatsAppDomain = getWhatsAppDomain()
       const url = `https://${whatsAppDomain}/?text=${encodedValue}`
       window.open(url)
       const { recordShare, afterShare } = this.props
