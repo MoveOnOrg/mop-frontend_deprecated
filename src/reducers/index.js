@@ -71,10 +71,11 @@ function petitionReducer(state = initialPetitionState, action) {
       }
       if (state.nextPetitionsLoaded) {
         updateData.nextPetitions = state.nextPetitions.filter(petId => petId !== petition.petition_id)
-      }
-      if (action.cohort) {
-        updateData = {
-          cohort: true
+
+        if (action.cohort) {
+          updateData = {
+            cohort: true
+          }
         }
       }
       return {
