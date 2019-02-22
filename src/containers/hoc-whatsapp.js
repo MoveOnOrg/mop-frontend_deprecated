@@ -8,9 +8,9 @@ function getWhatsAppDomain() {
   const isMobile = /iPhone/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
   let domain = ''
   if (isFirefoxOrSafari && !isMobile && !isChrome) {
-    domain = 'web.whatsapp.com'
+    domain = 'web.whatsapp.com/send?phone=&text='
   } else if (isChrome || (isFirefoxOrSafari && isMobile)) {
-    domain = 'wa.me'
+    domain = 'wa.me/?text='
   }
   return domain
 }
@@ -41,7 +41,7 @@ export function withWhatsApp(WrappedComponent) {
     shareWhatsApp() {
       const encodedValue = encodeURIComponent(this.getWhatsAppText())
       const whatsAppDomain = getWhatsAppDomain()
-      const url = `https://${whatsAppDomain}/?text=${encodedValue}`
+      const url = `https://${whatsAppDomain}${encodedValue}`
       window.open(url)
       const { recordShare, afterShare } = this.props
       if (recordShare) recordShare()
