@@ -36,6 +36,9 @@ export default function userReducer(state = initialUserState, action) {
     }
   }
   switch (action.type) {
+    case sessionActionTypes.SESSION_COHORT_CHOICE:
+      return { ...state,
+               cohort: action.cohort }
     case sessionActionTypes.UNRECOGNIZE_USER_SESSION:
       return { anonymous: true } // Purposefully destroying current state
     case sessionActionTypes.ANONYMOUS_SESSION_START:

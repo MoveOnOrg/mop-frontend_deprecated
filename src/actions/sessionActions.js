@@ -5,7 +5,8 @@ export const actionTypes = {
   ANONYMOUS_SESSION_START: 'ANONYMOUS_SESSION_START',
   UNRECOGNIZE_USER_SESSION: 'UNRECOGNIZE_USER_SESSION',
   USER_SESSION_START: 'USER_SESSION_START',
-  USER_SESSION_FAILURE: 'USER_SESSION_FAILURE'
+  USER_SESSION_FAILURE: 'USER_SESSION_FAILURE',
+  SESSION_COHORT_CHOICE: 'SESSION_COHORT_CHOICE'
 }
 
 /**
@@ -108,6 +109,26 @@ export const loadSession = location => {
   }
 }
 
+export const loadCohort = location => {
+  let cohort = 0
+  const cohortString = (location && location.query && location.query.cohort)
+  if (cohortString) {
+    cohort = Number(cohortString) || 0
+  } else if (location && location.query && 'ab' in location.query) {
+    let probability = 0.5
+    if (Config.AB_TEST_ENABLED) {
+      probability = parseInt(Config.AB_TEST_ENABLED, 10) / 100
+    }
+    cohort = (Math.random() > probability ? 1 : 2)
+  }
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SESSION_COHORT_CHOICE,
+      cohort
+    })
+  }
+}
+
 export const trackPage = () => {
   // This will track both when they navigate to a new page OR use the back button
   if (window.analytics || window.gtag) {
@@ -133,5 +154,6 @@ export const trackPage = () => {
 export const actions = {
   unRecognize,
   loadSession,
+  loadCohort,
   callSessionApi
 }

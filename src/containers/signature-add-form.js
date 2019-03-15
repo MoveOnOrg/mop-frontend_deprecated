@@ -31,7 +31,8 @@ class SignatureAddForm extends React.Component {
       thirdparty_optin: props.hiddenOptin || props.showOptinCheckbox,
       hidden_optin: props.hiddenOptin,
       required: {},
-      hideUntilInteract: true
+      hideUntilInteract: true,
+      dynamic_sms_flow: props.query.sms || false
     }
     this.validationFunction = {
       email: isValidEmail,
@@ -123,7 +124,7 @@ class SignatureAddForm extends React.Component {
     if (referrerData.length) {
       osdiSignature.referrer_data = Object.assign({}, ...referrerData)
     }
-    const customFields = ['thirdparty_optin', 'hidden_optin', 'volunteer', 'mobile_optin']
+    const customFields = ['thirdparty_optin', 'hidden_optin', 'volunteer', 'mobile_optin', 'dynamic_sms_flow']
     const customData = customFields.filter(k => this.state[k]).map(k => ({ [k]: this.state[k] }))
     if (customData.length) {
       osdiSignature.person.custom_fields = Object.assign({}, ...customData)

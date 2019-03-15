@@ -8,6 +8,7 @@ import Config from '../config'
 import ThanksComponent from 'Theme/thanks'
 import TwitterButton from 'Theme/twitter-button'
 import FacebookButton from 'Theme/facebook-button'
+import WhatsAppButton from 'GiraffeTheme/whatsapp-button'
 import MailButton from 'Theme/mail-button'
 import CopyPaste from 'Theme/copy-paste'
 import RawLink from 'Theme/raw-link'
@@ -41,7 +42,6 @@ class Thanks extends React.Component {
   constructor(props) {
     super(props)
     const { petition, fromSource, signatureMessage, user } = props
-
     this.trackingParams = getTrackingParams(signatureMessage, user)
     this.trackingParamsString = stringifyParams(this.trackingParams)
 
@@ -52,7 +52,8 @@ class Thanks extends React.Component {
 
     this.state = {
       sharedSocially: false,
-      pre: getPre(fromSource, petition, this.props.isCreator)
+      pre: getPre(fromSource, petition, this.props.isCreator),
+      whatsApp: (user && user.cohort === 1)
     }
 
     this.recordShare = this.recordShare.bind(this)
@@ -61,6 +62,7 @@ class Thanks extends React.Component {
     this.renderMail = this.renderMail.bind(this)
     this.renderCopyPaste = this.renderCopyPaste.bind(this)
     this.renderRawLink = this.renderRawLink.bind(this)
+    this.renderWhatsApp = this.renderWhatsApp.bind(this)
   }
 
   componentDidMount() {
@@ -78,6 +80,24 @@ class Thanks extends React.Component {
         source,
         this.props.user
       )
+  }
+  /*
+  Explanation for values passed in shortLinkMode:
+  If it is the creator, we send in an arbitrary letter to denote if the user is a creator AND share medium
+  for example sending in a `v` will be read in the back end as `whatsapp_creator`
+  `w` will be read as `whatsapp_signer` - This will append 'wa' as the source to the share link
+  short code modes are determined here: `/mop/petitions/petition_shortcode.py`
+  */
+  renderWhatsApp() {
+    return (this.state.whatsApp ?
+      <WhatsAppButton
+        petition={this.props.petition}
+        shortLinkMode={this.props.isCreator ? 'v' : 'w'}
+        shortLinkArgs={this.shortLinkArgs}
+        recordShare={this.recordShare('whatsapp', `${this.state.pre}.wa`)}
+        afterShare={() => this.setState({ sharedSocially: true })}
+      />
+      : '')
   }
 
   renderTwitter() {
@@ -155,6 +175,7 @@ class Thanks extends React.Component {
         sharedSocially={this.state.sharedSocially}
         isCreator={this.props.isCreator}
         renderTwitter={this.renderTwitter}
+        renderWhatsApp={this.renderWhatsApp}
         renderFacebook={this.renderFacebook}
         renderMail={this.renderMail}
         renderCopyPaste={this.renderCopyPaste}

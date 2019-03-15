@@ -110,7 +110,6 @@ export function searchPetitions(query, pageNumber, selectState) {
   }
 }
 
-
 export function loadTopPetitions(pac, megapartner, forceReload) {
   // topPetitionsKey must not just be truthily equal but exact
   // eslint-disable-next-line no-unneeded-ternary
