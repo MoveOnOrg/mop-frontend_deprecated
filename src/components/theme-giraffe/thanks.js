@@ -29,6 +29,7 @@ const Thanks = ({
 
         <div className='petition-thanks__cta-group'>
           {renderMail()}
+          {renderWhatsApp()}
           {renderFacebook()}
         </div>
 
@@ -38,7 +39,6 @@ const Thanks = ({
 
         <div className='petition-thanks__links'>
           {renderTwitter()}
-          {renderWhatsApp()}
           {renderRawLink()}
         </div>
       </div>

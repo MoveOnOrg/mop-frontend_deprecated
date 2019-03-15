@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { withWhatsApp } from '../../containers/hoc-whatsapp'
-import WhatsAppSvg from 'GiraffeUI/svgs/whatsapp.svg'
+import WhatsAppWhiteSvg from 'GiraffeUI/svgs/whatsappwhite.svg'
 
 const WhatsAppButton = ({ onClick }) => (
-  <a className='mo-btn petition-thanks__link' onClick={onClick}>
-    <WhatsAppSvg />
-    WhatsApp
+  <a className='petition-thanks__cta wapp' onClick={onClick}>
+    <WhatsAppWhiteSvg />
+    Share on WhatsApp
   </a>
 )
 
