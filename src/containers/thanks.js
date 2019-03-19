@@ -9,6 +9,7 @@ import ThanksComponent from 'Theme/thanks'
 import TwitterButton from 'Theme/twitter-button'
 import FacebookButton from 'Theme/facebook-button'
 import WhatsAppButton from 'GiraffeTheme/whatsapp-button'
+import MessengerButton from 'GiraffeTheme/messenger-button'
 import MailButton from 'Theme/mail-button'
 import CopyPaste from 'Theme/copy-paste'
 import RawLink from 'Theme/raw-link'
@@ -63,6 +64,7 @@ class Thanks extends React.Component {
     this.renderCopyPaste = this.renderCopyPaste.bind(this)
     this.renderRawLink = this.renderRawLink.bind(this)
     this.renderWhatsApp = this.renderWhatsApp.bind(this)
+    this.renderMessenger = this.renderMessenger.bind(this)
     this.cohortTracker = new CohortTracker({
       experiment: 'whatsAppShare1',
       variationname: (this.state.whatsApp ? 'cohort1' : 'current'),
@@ -106,6 +108,17 @@ class Thanks extends React.Component {
         afterShare={() => this.setState({ sharedSocially: true })}
       />
       : '')
+  }
+
+  renderMessenger() {
+    return (
+      <MessengerButton
+        petition={this.props.petition}
+        shortLinkMode={this.props.isCreator ? 'd' : 'a'}
+        shortLinkArgs={this.shortLinkArgs}
+        recordShare={this.recordShare('messenger', `${this.state.pre}.me`)}
+        afterShare={() => this.setState({ sharedSocially: true })}
+      />)
   }
 
   renderTwitter() {

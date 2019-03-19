@@ -10,6 +10,7 @@ const Thanks = ({
   renderTwitter,
   renderWhatsApp,
   renderFacebook,
+  renderMessenger,
   renderMail,
   renderCopyPaste,
   nextPetition
@@ -40,6 +41,7 @@ const Thanks = ({
           {renderTwitter()}
           {renderWhatsApp()}
           {renderRawLink()}
+          {renderMessenger()}
         </div>
       </div>
     </div>
