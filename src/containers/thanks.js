@@ -65,7 +65,8 @@ class Thanks extends React.Component {
     this.renderWhatsApp = this.renderWhatsApp.bind(this)
     this.cohortTracker = new CohortTracker({
       experiment: 'whatsAppShare',
-      variationname: (this.state.whatsApp ? 'cohort1' : 'current')
+      variationname: (this.state.whatsApp ? 'cohort1' : 'current'),
+      ...this.trackingParams
     })
   }
 
@@ -73,7 +74,9 @@ class Thanks extends React.Component {
     if (!this.props.nextPetitionsLoaded && !this.props.isCreator) {
       this.props.dispatch(petitionActions.loadTopPetitions(this.props.petition.entity === 'pac' ? 1 : 0, '', false))
     }
-    this.cohortTracker.track('whatsApp')
+    if (this.props.user && this.props.user.cohort) {
+      this.cohortTracker.track('whatsapp')
+    }
   }
 
   recordShare(medium, source) {

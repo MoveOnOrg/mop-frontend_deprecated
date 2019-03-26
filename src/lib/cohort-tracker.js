@@ -1,12 +1,11 @@
 import Config from '../config'
 
-export function CohortTracker({ variationname = '', experiment = '' }) {
-  this.state = {
-    variationname, // variation name is a description identifier and should be 'current' if it's the baseline
-    experiment // meant to define the specific experiment by name e.g. 'signMobilePhones1'
+export default class CohortTracker {
+  constructor(state) {
+    this.state = { ...state }
   }
   // method that actually sends to segment
-  this.track = function track(eventName) {
+  track(eventName) {
     if (window.analytics) {
       window.analytics.track(eventName, { ...this.state })
     }
