@@ -114,7 +114,7 @@ export const loadCohort = location => {
   const cohortString = (location && location.query && location.query.cohort)
   if (cohortString) {
     cohort = Number(cohortString) || 0
-  } else if (location && location.query && 'ab' in location.query) {
+  } else if (Config.AB_TEST_ENABLED || (location && location.query && 'ab' in location.query)) {
     let probability = 0.5
     if (Config.AB_TEST_ENABLED) {
       probability = parseInt(Config.AB_TEST_ENABLED, 10) / 100
