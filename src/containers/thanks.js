@@ -66,7 +66,7 @@ class Thanks extends React.Component {
     this.cohortTracker = new CohortTracker({
       experiment: 'whatsAppShare',
       variationname: (this.state.whatsApp ? 'cohort1' : 'current'),
-      ...this.trackingParams
+      userinfo: this.trackingParams
     })
   }
 
