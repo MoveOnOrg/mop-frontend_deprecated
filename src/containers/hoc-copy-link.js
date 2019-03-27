@@ -26,6 +26,8 @@ export function withCopyLink(WrappedComponent) {
       e.preventDefault()
       copyText(this.getLink())
       this.setState({ copied: true })
+      const { recordShare } = this.props
+      if (recordShare) recordShare()
     }
 
     getLink() {
@@ -50,7 +52,8 @@ export function withCopyLink(WrappedComponent) {
 
   CopyLink.propTypes = {
     shortLinkMode: PropTypes.string,
-    shortLinkArgs: PropTypes.array
+    shortLinkArgs: PropTypes.array,
+    recordShare: PropTypes.func
   }
 
   return CopyLink

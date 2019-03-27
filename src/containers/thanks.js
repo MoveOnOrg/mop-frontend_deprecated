@@ -154,6 +154,7 @@ class Thanks extends React.Component {
       <RawLink
         shortLinkMode={this.props.isCreator ? 'k' : 'l'}
         shortLinkArgs={this.shortLinkArgs}
+        recordShare={this.recordShare('rawlink', `${this.state.pre}.lnk`)}
       />
     )
   }
