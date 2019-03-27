@@ -1,11 +1,14 @@
 import Config from '../config'
 
-export default class CohortTracker {
-  constructor(state) {
-    this.state = { ...state }
+export function CohortTracker({ experiment = '', variationname = '', userinfo = {} }) {
+  this.state = {
+    experiment,
+    variationname,
+    user_signonid: userinfo.r_by,
+    user_sighash: userinfo.r_hash
   }
   // method that actually sends to segment
-  track(eventName) {
+  this.track = function track(eventName) {
     if (window.analytics) {
       window.analytics.track(eventName, { ...this.state })
     }
