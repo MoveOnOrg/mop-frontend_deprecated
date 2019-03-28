@@ -1,6 +1,6 @@
 import Config from '../config'
 
-export function CohortTracker({ experiment = '', variationname = '', userinfo = {} }) {
+export function CohortTracker({ experiment = '', variationname = '', userinfo }) {
   this.state = {
     experiment,
     variationname,
