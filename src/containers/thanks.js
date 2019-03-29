@@ -9,6 +9,7 @@ import ThanksComponent from 'Theme/thanks'
 import TwitterButton from 'Theme/twitter-button'
 import FacebookButton from 'Theme/facebook-button'
 import WhatsAppButton from 'GiraffeTheme/whatsapp-button'
+import WhatsAppLink from 'GiraffeTheme/whatsapp-link'
 import MailButton from 'Theme/mail-button'
 import CopyPaste from 'Theme/copy-paste'
 import RawLink from 'Theme/raw-link'
@@ -62,7 +63,8 @@ class Thanks extends React.Component {
     this.renderMail = this.renderMail.bind(this)
     this.renderCopyPaste = this.renderCopyPaste.bind(this)
     this.renderRawLink = this.renderRawLink.bind(this)
-    this.renderWhatsApp = this.renderWhatsApp.bind(this)
+    this.renderWhatsAppLink = this.renderWhatsAppLink.bind(this)
+    this.renderWhatsAppButton = this.renderWhatsAppButton.bind(this)
     this.cohortTracker = new CohortTracker({
       experiment: 'whatsAppShare1',
       variationname: (this.state.whatsApp ? 'cohort1' : 'current'),
@@ -96,9 +98,21 @@ class Thanks extends React.Component {
   `w` will be read as `whatsapp_signer` - This will append 'wa' as the source to the share link
   short code modes are determined here: `/mop/petitions/petition_shortcode.py`
   */
-  renderWhatsApp() {
+  renderWhatsAppButton() {
     return (this.state.whatsApp ?
       <WhatsAppButton
+        petition={this.props.petition}
+        shortLinkMode={this.props.isCreator ? 'v' : 'w'}
+        shortLinkArgs={this.shortLinkArgs}
+        recordShare={this.recordShare('whatsapp', `${this.state.pre}.wa`)}
+        afterShare={() => this.setState({ sharedSocially: true })}
+      />
+      : '')
+  }
+
+  renderWhatsAppLink() {
+    return (this.state.whatsApp ?
+      <WhatsAppLink
         petition={this.props.petition}
         shortLinkMode={this.props.isCreator ? 'v' : 'w'}
         shortLinkArgs={this.shortLinkArgs}
@@ -184,7 +198,8 @@ class Thanks extends React.Component {
         sharedSocially={this.state.sharedSocially}
         isCreator={this.props.isCreator}
         renderTwitter={this.renderTwitter}
-        renderWhatsApp={this.renderWhatsApp}
+        renderWhatsAppLink={this.renderWhatsAppLink}
+        renderWhatsAppButton={this.renderWhatsAppButton}
         renderFacebook={this.renderFacebook}
         renderMail={this.renderMail}
         renderCopyPaste={this.renderCopyPaste}
