@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { actions as petitionActions } from '../actions/petitionActions'
-import { md5ToToken, stringifyParams } from '../lib'
+import { md5ToToken, stringifyParams, CohortTracker } from '../lib'
 import Config from '../config'
 
 import ThanksComponent from 'Theme/thanks'
@@ -63,11 +63,19 @@ class Thanks extends React.Component {
     this.renderCopyPaste = this.renderCopyPaste.bind(this)
     this.renderRawLink = this.renderRawLink.bind(this)
     this.renderWhatsApp = this.renderWhatsApp.bind(this)
+    this.cohortTracker = new CohortTracker({
+      experiment: 'whatsAppShare1',
+      variationname: (this.state.whatsApp ? 'cohort1' : 'current'),
+      userinfo: this.trackingParams // sending the user signon id or sig hash to identify them
+    })
   }
 
   componentDidMount() {
     if (!this.props.nextPetitionsLoaded && !this.props.isCreator) {
       this.props.dispatch(petitionActions.loadTopPetitions(this.props.petition.entity === 'pac' ? 1 : 0, '', false))
+    }
+    if (this.props.user && this.props.user.cohort) {
+      this.cohortTracker.track('whatsapp')
     }
   }
 
