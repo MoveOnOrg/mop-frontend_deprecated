@@ -199,6 +199,7 @@ class Thanks extends React.Component {
         renderTwitter={this.renderTwitter}
         renderWhatsApp={this.renderWhatsApp}
         renderFacebook={this.renderFacebook}
+        renderMessenger={this.renderMessenger}
         renderMail={this.renderMail}
         renderCopyPaste={this.renderCopyPaste}
         renderRawLink={this.renderRawLink}

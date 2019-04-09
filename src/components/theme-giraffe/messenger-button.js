@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { withTwitter } from '../../containers/hoc-twitter'
-import TwitterSvg from 'GiraffeUI/svgs/twitter.svg'
+import { withMessenger } from '../../containers/hoc-messenger'
+import MessengerSvg from 'GiraffeUI/svgs/messenger.svg'
 
 const MessengerButton = ({ onClick }) => (
   <a className='mo-btn petition-thanks__link' onClick={onClick}>
-    <TwitterSvg />
-    Twitter
+    <MessengerSvg />
+    Messenger
   </a>
 )
 
