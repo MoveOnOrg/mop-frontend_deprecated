@@ -13,11 +13,11 @@ export function withMessenger(WrappedComponent) {
   class Messenger extends React.Component {
     constructor(props) {
       super(props)
-      this.getMessage = this.getMessage.bind(this)
+      this.getShareLink = this.getShareLink.bind(this)
       this.shareMessenger = this.shareMessenger.bind(this)
     }
 
-    getMessage() {
+    getShareLink() {
       const { petition, shortLinkMode, shortLinkArgs } = this.props
       const messengerShareLink = petitionShortCode(
         shortLinkMode,
@@ -25,14 +25,11 @@ export function withMessenger(WrappedComponent) {
       )
         /* no message length limit for messenger */
 
-      const suffix = `${messengerShareLink}`
-      const message = `Hi - I just signed this petition titled "${petition.title}" and I'm asking my friends to join me. Will you sign too? ${suffix}`
-
-      return message
+      return messengerShareLink
     }
 
     shareMessenger() {
-      const encodedValue = encodeURIComponent(this.getMessage())
+      const encodedValue = encodeURIComponent(this.getShareLink())
       const isMobile = /iPhone/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
       // should only show up on mobile
       const shareLink = (isMobile ? getMobileMessengerLink(encodedValue) : '')
