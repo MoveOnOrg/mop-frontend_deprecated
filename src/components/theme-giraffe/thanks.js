@@ -57,6 +57,7 @@ Thanks.propTypes = {
   renderMail: PropTypes.func,
   renderCopyPaste: PropTypes.func,
   renderRawLink: PropTypes.func,
+  renderMessenger: PropTypes.func,
   nextPetition: PropTypes.object
 }
 

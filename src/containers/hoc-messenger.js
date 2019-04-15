@@ -18,7 +18,7 @@ export function withMessenger(WrappedComponent) {
     }
 
     getShareLink() {
-      const { petition, shortLinkMode, shortLinkArgs } = this.props
+      const { shortLinkMode, shortLinkArgs } = this.props
       const messengerShareLink = petitionShortCode(
         shortLinkMode,
         ...shortLinkArgs
@@ -30,9 +30,7 @@ export function withMessenger(WrappedComponent) {
 
     shareMessenger() {
       const encodedValue = encodeURIComponent(this.getShareLink())
-      const isMobile = /iPhone/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
-      // should only show up on mobile
-      const shareLink = (isMobile ? getMobileMessengerLink(encodedValue) : '')
+      const shareLink = getMobileMessengerLink(encodedValue)
       window.open(shareLink)
       const { recordShare, afterShare } = this.props
       if (recordShare) recordShare()

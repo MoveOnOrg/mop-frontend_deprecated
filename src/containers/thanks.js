@@ -111,14 +111,16 @@ class Thanks extends React.Component {
   }
 
   renderMessenger() {
-    return (
+    const isMobile = /iPhone/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
+    return (isMobile ?
       <MessengerButton
         petition={this.props.petition}
         shortLinkMode={this.props.isCreator ? 'd' : 'a'}
         shortLinkArgs={this.shortLinkArgs}
         recordShare={this.recordShare('messenger', `${this.state.pre}.me`)}
         afterShare={() => this.setState({ sharedSocially: true })}
-      />)
+      />
+      : '')
   }
 
   renderTwitter() {
