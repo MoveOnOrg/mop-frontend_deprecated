@@ -3,14 +3,9 @@ import PropTypes from 'prop-types'
 import { petitionShortCode } from '../lib'
 import Config from '../config'
 
-function getDesktopMessengerLink(petitionLink) {
-  const msgrDesktopLink = FB.ui({
-    method: 'send',
-    link: petitionLink
-  }, (response) => { if (response) return })
-}
 
 function getMobileMessengerLink(encodedValue) {
+  // testing messenger link on mobile only first
  return `fb-messenger://share?link=${encodedValue}&app_id=${encodeURIComponent(Config.MESSENGER_APP_ID)}}`
 }
 
@@ -33,13 +28,14 @@ export function withMessenger(WrappedComponent) {
       const suffix = `${messengerShareLink}`
       const message = `Hi - I just signed this petition titled "${petition.title}" and I'm asking my friends to join me. Will you sign too? ${suffix}`
 
-      return suffix
+      return message
     }
 
     shareMessenger() {
       const encodedValue = encodeURIComponent(this.getMessage())
       const isMobile = /iPhone/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
-      const shareLink = (isMobile ? getMobileMessengerLink(encodedValue) : getDesktopMessengerLink(encodedValue))
+      // should only show up on mobile
+      const shareLink = (isMobile ? getMobileMessengerLink(encodedValue) : '')
       window.open(shareLink)
       const { recordShare, afterShare } = this.props
       if (recordShare) recordShare()

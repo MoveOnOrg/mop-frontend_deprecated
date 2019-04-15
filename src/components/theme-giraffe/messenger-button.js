@@ -5,9 +5,9 @@ import { withMessenger } from '../../containers/hoc-messenger'
 import MessengerSvg from 'GiraffeUI/svgs/messenger.svg'
 
 const MessengerButton = ({ onClick }) => (
-  <a className='mo-btn petition-thanks__link' onClick={onClick}>
+  <a className='petition-thanks__cta' onClick={onClick}>
     <MessengerSvg />
-    Messenger
+    Share on Messenger
   </a>
 )
 
