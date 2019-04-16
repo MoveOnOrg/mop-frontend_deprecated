@@ -64,7 +64,7 @@ class Thanks extends React.Component {
     this.renderRawLink = this.renderRawLink.bind(this)
     this.renderWhatsApp = this.renderWhatsApp.bind(this)
     this.cohortTracker = new CohortTracker({
-      experiment: 'whatsAppShare1',
+      experiment: 'whatsAppShare2',
       variationname: (this.state.whatsApp ? 'cohort1' : 'current'),
       userinfo: this.trackingParams // sending the user signon id or sig hash to identify them
     })
