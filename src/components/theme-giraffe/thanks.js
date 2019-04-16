@@ -8,7 +8,8 @@ const Thanks = ({
   isCreator,
   renderRawLink,
   renderTwitter,
-  renderWhatsApp,
+  renderWhatsAppLink,
+  renderWhatsAppButton,
   renderFacebook,
   renderMail,
   renderCopyPaste,
@@ -29,6 +30,7 @@ const Thanks = ({
 
         <div className='petition-thanks__cta-group'>
           {renderMail()}
+          {renderWhatsAppButton()}
           {renderFacebook()}
         </div>
 
@@ -38,7 +40,7 @@ const Thanks = ({
 
         <div className='petition-thanks__links'>
           {renderTwitter()}
-          {renderWhatsApp()}
+          {renderWhatsAppLink()}
           {renderRawLink()}
         </div>
       </div>
@@ -51,7 +53,8 @@ Thanks.propTypes = {
   isCreator: PropTypes.bool,
   renderTwitter: PropTypes.func,
   renderFacebook: PropTypes.func,
-  renderWhatsApp: PropTypes.func,
+  renderWhatsAppButton: PropTypes.func,
+  renderWhatsAppLink: PropTypes.func,
   renderMail: PropTypes.func,
   renderCopyPaste: PropTypes.func,
   renderRawLink: PropTypes.func,
