@@ -124,7 +124,7 @@ class Thanks extends React.Component {
 
   renderMessenger() {
     const isMobile = /iPhone/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
-    return (isMobile && this.state.messenger ?
+    return (isMobile && this.state.messenger && Config.MESSENGER_APP_ID ?
       <MessengerButton
         petition={this.props.petition}
         shortLinkMode={this.props.isCreator ? 'd' : 'a'}
