@@ -54,7 +54,8 @@ class Thanks extends React.Component {
 
     this.state = {
       sharedSocially: false,
-      pre: getPre(fromSource, petition, this.props.isCreator)
+      pre: getPre(fromSource, petition, this.props.isCreator),
+      messenger: (user && user.cohort === 1)
     }
 
     this.recordShare = this.recordShare.bind(this)
@@ -67,8 +68,8 @@ class Thanks extends React.Component {
     this.renderWhatsAppButton = this.renderWhatsAppButton.bind(this)
     this.renderMessenger = this.renderMessenger.bind(this)
     this.cohortTracker = new CohortTracker({
-      experiment: 'none',
-      variationname: 'current',
+      experiment: 'messenger1',
+      variationname: (this.state.messenger ? 'cohort1' : 'current'),
       userinfo: this.trackingParams // sending the user signon id or sig hash to identify them
     })
   }
@@ -77,6 +78,7 @@ class Thanks extends React.Component {
     if (!this.props.nextPetitionsLoaded && !this.props.isCreator) {
       this.props.dispatch(petitionActions.loadTopPetitions(this.props.petition.entity === 'pac' ? 1 : 0, '', false))
     }
+    if (this.props.user && this.props.user.cohort) this.cohortTracker.track('messenger')
   }
 
   recordShare(medium, source) {
@@ -122,7 +124,7 @@ class Thanks extends React.Component {
 
   renderMessenger() {
     const isMobile = /iPhone/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)
-    return (isMobile ?
+    return (isMobile && this.state.messenger ?
       <MessengerButton
         petition={this.props.petition}
         shortLinkMode={this.props.isCreator ? 'd' : 'a'}

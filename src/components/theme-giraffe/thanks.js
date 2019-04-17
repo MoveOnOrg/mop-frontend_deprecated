@@ -31,9 +31,9 @@ const Thanks = ({
 
         <div className='petition-thanks__cta-group'>
           {renderMail()}
-          {renderWhatsAppButton()}
           {renderFacebook()}
           {renderMessenger()}
+          {renderWhatsAppButton()}
         </div>
 
         <p>Or copy and paste the text below into a message:</p>
