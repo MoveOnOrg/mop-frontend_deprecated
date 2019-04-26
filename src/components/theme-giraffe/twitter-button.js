@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 
 import { withTwitter } from '../../containers/hoc-twitter'
 import TwitterSvg from 'GiraffeUI/svgs/twitter.svg'
+import { addBrandedColorClass } from '../../lib'
 
-const TwitterButton = ({ onClick }) => (
-  <a className='mo-btn petition-thanks__link' onClick={onClick}>
+const TwitterButton = ({ onClick, cohort }) => (
+  <a className={'mo-btn petition-thanks__link ' + addBrandedColorClass('twitter', cohort)} onClick={onClick}>
     <TwitterSvg />
     Twitter
   </a>

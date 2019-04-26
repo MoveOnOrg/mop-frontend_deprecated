@@ -221,3 +221,5 @@ export const parseSQSApiResponse = response =>
   })
 
 export const byIdAndName = p => ({ [p.petition_id]: p, [p.name]: p })
+
+export const addBrandedColorClass = (shareType, cohort) => { return (cohort == 1 ? `${shareType}-branded` : '')}
