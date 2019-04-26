@@ -6,14 +6,15 @@ import WhatsAppSvg from 'GiraffeUI/svgs/whatsapp.svg'
 import { addBrandedColorClass } from '../../lib'
 
 const WhatsAppLink = ({ onClick, cohort }) => (
-  <a className={'mo-btn petition-thanks__link d-none d-lg-inline-flex ' + addBrandedColorClass('whatsapp', cohort)} onClick={onClick}>
+  <a className={`mo-btn petition-thanks__link d-none d-lg-inline-flex ${addBrandedColorClass('whatsapp', cohort)}`} onClick={onClick}>
     <WhatsAppSvg />
     WhatsApp
   </a>
 )
 
 WhatsAppLink.propTypes = {
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  cohort: PropTypes.bool
 }
 
 export default withWhatsApp(WhatsAppLink)
