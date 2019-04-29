@@ -6,7 +6,7 @@ import Config from '../config'
 
 function getMobileMessengerLink(encodedValue) {
   // testing messenger link on mobile only first
- return `fb-messenger://share?link=${encodedValue}&app_id=${encodeURIComponent(Config.MESSENGER_APP_ID)}}`
+ return `fb-messenger://share?link=${encodedValue}&app_id=${encodeURIComponent(Config.MESSENGER_APP_ID)}`
 }
 
 export function withMessenger(WrappedComponent) {
@@ -32,6 +32,7 @@ export function withMessenger(WrappedComponent) {
       const encodedValue = encodeURIComponent(this.getShareLink())
       const shareLink = getMobileMessengerLink(encodedValue)
       window.open(shareLink)
+      window.open('https://m.me/moveon')
       const { recordShare, afterShare } = this.props
       if (recordShare) recordShare()
       if (afterShare) afterShare()
