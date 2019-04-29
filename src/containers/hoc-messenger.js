@@ -23,16 +23,16 @@ export function withMessenger(WrappedComponent) {
         shortLinkMode,
         ...shortLinkArgs
       )
-        /* no message length limit for messenger */
-
       return messengerShareLink
     }
 
     shareMessenger() {
+      /* open this window in case user does not have messenger installed */
+      // takes them to moveon page but doesnt include info on petition
       const encodedValue = encodeURIComponent(this.getShareLink())
       const shareLink = getMobileMessengerLink(encodedValue)
       window.open(shareLink)
-      window.open('https://m.me/moveon')
+      setTimeout(() => { window.open('https://m.me/moveon') }, 3000)
       const { recordShare, afterShare } = this.props
       if (recordShare) recordShare()
       if (afterShare) afterShare()
