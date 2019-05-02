@@ -23,14 +23,19 @@ export function withMessenger(WrappedComponent) {
         shortLinkMode,
         ...shortLinkArgs
       )
-      return messengerShareLink
+      const encodedLink = encodeURIComponent(messengerShareLink)
+      return encodedLink
     }
 
     shareMessenger() {
-      /* open this window in case user does not have messenger installed */
-      // takes them to moveon page but doesnt include info on petition
-      const encodedValue = encodeURIComponent(this.getShareLink())
-      const shareLink = getMobileMessengerLink(encodedValue)
+      /* If the app is installed:
+        - User will be brought to the app with the petition
+        - The second timeout will still be called and the moveon messenger page will open in a window
+        If the app is not installed:
+        - The first window.open call will fail and error
+        - The second timeout will still be called and the moveon messenger page will open in a window
+        - The second window.open call is for users without the app installed */
+      const shareLink = getMobileMessengerLink(this.getShareLink())
       window.open(shareLink)
       setTimeout(() => { window.open('https://m.me/moveon') }, 3000)
       const { recordShare, afterShare } = this.props
