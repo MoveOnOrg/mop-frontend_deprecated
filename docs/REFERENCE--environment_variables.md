@@ -19,3 +19,4 @@ LOCAL_REACT                       | Dev only: a path with react.js and react-dom
 LOCAL_CSS                         | Dev only: a theme-giraffe style.css. E.g. `http://localhost:3000/styles/main.css`, as served by `gulp watch` in the giraffe repo, so you can change css and/or develop offline. _Default_: Loads css from the mop-static-stage s3 bucket
 AB_TEST_ENABLED                   | When set to an integer, enables AB test
 FAKE_ANALYTICS                    | Dev only: set to true if window.analytics isnt exposed from backend server
+MESSENGER_APP_ID                  | Necessary in order to create deep link for Messenger share button after signing

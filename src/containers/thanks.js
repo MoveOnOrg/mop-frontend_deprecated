@@ -10,6 +10,7 @@ import TwitterButton from 'Theme/twitter-button'
 import FacebookButton from 'Theme/facebook-button'
 import WhatsAppButton from 'GiraffeTheme/whatsapp-button'
 import WhatsAppLink from 'GiraffeTheme/whatsapp-link'
+import MessengerButton from 'GiraffeTheme/messenger-button'
 import MailButton from 'Theme/mail-button'
 import CopyPaste from 'Theme/copy-paste'
 import RawLink from 'Theme/raw-link'
@@ -54,20 +55,22 @@ class Thanks extends React.Component {
     this.state = {
       sharedSocially: false,
       pre: getPre(fromSource, petition, this.props.isCreator),
-      whatsApp: (user && user.cohort === 1)
+      whatsApp: false, // need to hide whatsapp button during messenger test
+      messenger: (user && user.cohort === 1)
     }
 
     this.recordShare = this.recordShare.bind(this)
     this.renderTwitter = this.renderTwitter.bind(this)
     this.renderFacebook = this.renderFacebook.bind(this)
+    this.renderMessenger = this.renderMessenger.bind(this)
     this.renderMail = this.renderMail.bind(this)
     this.renderCopyPaste = this.renderCopyPaste.bind(this)
     this.renderRawLink = this.renderRawLink.bind(this)
     this.renderWhatsAppLink = this.renderWhatsAppLink.bind(this)
     this.renderWhatsAppButton = this.renderWhatsAppButton.bind(this)
     this.cohortTracker = new CohortTracker({
-      experiment: 'whatsAppShare2',
-      variationname: (this.state.whatsApp ? 'cohort1' : 'current'),
+      experiment: 'messenger2',
+      variationname: (this.state.messenger ? 'cohort1' : 'current'),
       userinfo: this.trackingParams // sending the user signon id or sig hash to identify them
     })
   }
@@ -76,9 +79,8 @@ class Thanks extends React.Component {
     if (!this.props.nextPetitionsLoaded && !this.props.isCreator) {
       this.props.dispatch(petitionActions.loadTopPetitions(this.props.petition.entity === 'pac' ? 1 : 0, '', false))
     }
-    if (this.props.user && this.props.user.cohort) {
-      this.cohortTracker.track('whatsapp')
-    }
+
+    if (this.props.user && this.props.user.cohort) this.cohortTracker.track('messenger')
   }
 
   recordShare(medium, source) {
@@ -146,6 +148,19 @@ class Thanks extends React.Component {
     )
   }
 
+  renderMessenger() {
+    const isMobile = /iPhone|iPad|Android/.test(navigator.userAgent)
+    return (isMobile && this.state.messenger && Config.MESSENGER_APP_ID ?
+      <MessengerButton
+        petition={this.props.petition}
+        shortLinkMode={this.props.isCreator ? 'd' : 'a'}
+        shortLinkArgs={this.shortLinkArgs}
+        recordShare={this.recordShare('messenger', `${this.state.pre}.me`)}
+        afterShare={() => this.setState({ sharedSocially: true })}
+      />
+     : '')
+   }
+
   renderMail() {
     return (
       <MailButton
@@ -201,6 +216,7 @@ class Thanks extends React.Component {
         renderWhatsAppLink={this.renderWhatsAppLink}
         renderWhatsAppButton={this.renderWhatsAppButton}
         renderFacebook={this.renderFacebook}
+        renderMessenger={this.renderMessenger}
         renderMail={this.renderMail}
         renderCopyPaste={this.renderCopyPaste}
         renderRawLink={this.renderRawLink}
