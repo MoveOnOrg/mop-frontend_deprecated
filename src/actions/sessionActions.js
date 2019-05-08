@@ -119,7 +119,7 @@ export const loadCohort = location => {
     if (Config.AB_TEST_ENABLED) {
       probability = parseInt(Config.AB_TEST_ENABLED, 10) / 100
     }
-    cohort = (Math.random() > probability ? 1 : 2)
+    cohort = (Math.random() < probability ? 1 : 2)
   }
   return dispatch => {
     dispatch({
