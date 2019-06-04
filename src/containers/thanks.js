@@ -2,14 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { actions as petitionActions } from '../actions/petitionActions'
-import { md5ToToken, stringifyParams, CohortTracker } from '../lib'
+import { md5ToToken, stringifyParams } from '../lib'
 import Config from '../config'
 
 import ThanksComponent from 'Theme/thanks'
 import TwitterButton from 'Theme/twitter-button'
 import FacebookButton from 'Theme/facebook-button'
-import WhatsAppButton from 'GiraffeTheme/whatsapp-button'
-import WhatsAppLink from 'GiraffeTheme/whatsapp-link'
 import MessengerButton from 'GiraffeTheme/messenger-button'
 import MailButton from 'Theme/mail-button'
 import CopyPaste from 'Theme/copy-paste'
@@ -54,9 +52,7 @@ class Thanks extends React.Component {
 
     this.state = {
       sharedSocially: false,
-      pre: getPre(fromSource, petition, this.props.isCreator),
-      whatsApp: false, // need to hide whatsapp button during messenger test
-      messenger: (user && user.cohort === 1)
+      pre: getPre(fromSource, petition, this.props.isCreator)
     }
 
     this.recordShare = this.recordShare.bind(this)
@@ -66,21 +62,12 @@ class Thanks extends React.Component {
     this.renderMail = this.renderMail.bind(this)
     this.renderCopyPaste = this.renderCopyPaste.bind(this)
     this.renderRawLink = this.renderRawLink.bind(this)
-    this.renderWhatsAppLink = this.renderWhatsAppLink.bind(this)
-    this.renderWhatsAppButton = this.renderWhatsAppButton.bind(this)
-    this.cohortTracker = new CohortTracker({
-      experiment: 'messenger4',
-      variationname: (this.state.messenger ? 'cohort1' : 'current'),
-      userinfo: this.trackingParams // sending the user signon id or sig hash to identify them
-    })
   }
 
   componentDidMount() {
     if (!this.props.nextPetitionsLoaded && !this.props.isCreator) {
       this.props.dispatch(petitionActions.loadTopPetitions(this.props.petition.entity === 'pac' ? 1 : 0, '', false))
     }
-
-    if (this.props.user && this.props.user.cohort) this.cohortTracker.track('messenger')
   }
 
   recordShare(medium, source) {
@@ -96,33 +83,10 @@ class Thanks extends React.Component {
   /*
   Explanation for values passed in shortLinkMode:
   If it is the creator, we send in an arbitrary letter to denote if the user is a creator AND share medium
-  for example sending in a `v` will be read in the back end as `whatsapp_creator`
-  `w` will be read as `whatsapp_signer` - This will append 'wa' as the source to the share link
+  for example sending in a `c` will be read in the back end as `twitter_creator`
+  `t` will be read as `twitter_signer` - This will append 'tw' as the source to the share link
   short code modes are determined here: `/mop/petitions/petition_shortcode.py`
   */
-  renderWhatsAppButton() {
-    return (this.state.whatsApp ?
-      <WhatsAppButton
-        petition={this.props.petition}
-        shortLinkMode={this.props.isCreator ? 'v' : 'w'}
-        shortLinkArgs={this.shortLinkArgs}
-        recordShare={this.recordShare('whatsapp', `${this.state.pre}.wa`)}
-        afterShare={() => this.setState({ sharedSocially: true })}
-      />
-      : '')
-  }
-
-  renderWhatsAppLink() {
-    return (this.state.whatsApp ?
-      <WhatsAppLink
-        petition={this.props.petition}
-        shortLinkMode={this.props.isCreator ? 'v' : 'w'}
-        shortLinkArgs={this.shortLinkArgs}
-        recordShare={this.recordShare('whatsapp', `${this.state.pre}.wa`)}
-        afterShare={() => this.setState({ sharedSocially: true })}
-      />
-      : '')
-  }
 
   renderTwitter() {
     return (
@@ -149,8 +113,8 @@ class Thanks extends React.Component {
   }
 
   renderMessenger() {
-    const isMobile = /iPhone|iPad|Android/.test(navigator.userAgent)
-    return (isMobile && this.state.messenger && Config.MESSENGER_APP_ID ?
+    const isMobileOrTablet = /iPhone|iPad|Android/.test(navigator.userAgent)
+    return (isMobileOrTablet && Config.MESSENGER_APP_ID ?
       <MessengerButton
         petition={this.props.petition}
         shortLinkMode={this.props.isCreator ? 'd' : 'a'}
@@ -213,8 +177,6 @@ class Thanks extends React.Component {
         sharedSocially={this.state.sharedSocially}
         isCreator={this.props.isCreator}
         renderTwitter={this.renderTwitter}
-        renderWhatsAppLink={this.renderWhatsAppLink}
-        renderWhatsAppButton={this.renderWhatsAppButton}
         renderFacebook={this.renderFacebook}
         renderMessenger={this.renderMessenger}
         renderMail={this.renderMail}
