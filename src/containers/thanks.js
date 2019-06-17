@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { actions as petitionActions } from '../actions/petitionActions'
-import { md5ToToken, stringifyParams } from '../lib'
+import { md5ToToken, stringifyParams, CohortTracker } from '../lib'
 import Config from '../config'
 
 import ThanksComponent from 'Theme/thanks'
@@ -52,7 +52,8 @@ class Thanks extends React.Component {
 
     this.state = {
       sharedSocially: false,
-      pre: getPre(fromSource, petition, this.props.isCreator)
+      pre: getPre(fromSource, petition, this.props.isCreator),
+      messenger: (user && user.cohort === 1)
     }
 
     this.recordShare = this.recordShare.bind(this)
@@ -62,12 +63,18 @@ class Thanks extends React.Component {
     this.renderMail = this.renderMail.bind(this)
     this.renderCopyPaste = this.renderCopyPaste.bind(this)
     this.renderRawLink = this.renderRawLink.bind(this)
+    this.cohortTracker = new CohortTracker({
+      experiment: 'messenger5', // messenger test turned on for 90/10 split
+      variationname: (this.state.messenger ? 'cohort1' : 'current'),
+      userinfo: this.trackingParams // sending the user signon id or sig hash to identify them
+    })
   }
 
   componentDidMount() {
     if (!this.props.nextPetitionsLoaded && !this.props.isCreator) {
       this.props.dispatch(petitionActions.loadTopPetitions(this.props.petition.entity === 'pac' ? 1 : 0, '', false))
     }
+    if (this.props.user && this.props.user.cohort) this.cohortTracker.track('messenger')
   }
 
   recordShare(medium, source) {
@@ -114,7 +121,7 @@ class Thanks extends React.Component {
 
   renderMessenger() {
     const isMobileOrTablet = /iPhone|iPad|Android/.test(navigator.userAgent)
-    return (isMobileOrTablet && Config.MESSENGER_APP_ID ?
+    return (isMobileOrTablet && this.state.messenger && Config.MESSENGER_APP_ID ?
       <MessengerButton
         petition={this.props.petition}
         shortLinkMode={this.props.isCreator ? 'd' : 'a'}
