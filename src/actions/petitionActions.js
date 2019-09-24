@@ -1,5 +1,5 @@
 import Config from '../config'
-import { getPageLoadTime, stringifyParams, rejectNetworkErrorsAs500, parseAPIResponse, parseSQSApiResponse } from '../lib'
+import { getPageLoadTime, stringifyParams, rejectNetworkErrorsAs500, parseAPIResponse, parseSQSApiResponse, md5ToToken } from '../lib'
 import { appLocation } from '../routes'
 
 export const actionTypes = {
@@ -197,6 +197,10 @@ const signatureSuccess = (dispatch, response, petition, signature, options) => {
     if (sqsResponse) {
       dispatchData.messageId = sqsResponse.MessageId
       dispatchData.messageMd5 = sqsResponse.MD5OfMessageBody
+      if (window.analytics && window.analytics.alias) {
+        const r_hash = md5ToToken(dispatchData.messageMd5)
+        window.analytics.alias(`rhash${r_hash}`)
+      }
     }
   }
   const dispatchResult = dispatch(dispatchData)
