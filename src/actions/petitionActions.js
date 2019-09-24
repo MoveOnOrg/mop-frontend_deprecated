@@ -1,5 +1,5 @@
 import Config from '../config'
-import { getPageLoadTime, stringifyParams, rejectNetworkErrorsAs500, parseAPIResponse, parseSQSApiResponse } from '../lib'
+import { getPageLoadTime, stringifyParams, rejectNetworkErrorsAs500, parseAPIResponse, parseSQSApiResponse, md5ToToken } from '../lib'
 import { appLocation } from '../routes'
 
 export const actionTypes = {
@@ -197,6 +197,10 @@ const signatureSuccess = (dispatch, response, petition, signature, options) => {
     if (sqsResponse) {
       dispatchData.messageId = sqsResponse.MessageId
       dispatchData.messageMd5 = sqsResponse.MD5OfMessageBody
+      if (window.analytics && window.analytics.alias) {
+        const r_hash = md5ToToken(dispatchData.messageMd5)
+        window.analytics.alias(`rhash${r_hash}`)
+      }
     }
   }
   const dispatchResult = dispatch(dispatchData)
@@ -292,6 +296,14 @@ export const recordShareClick = (petition, tracking, medium, source, user) => {
   }
   if (user && user.signonId) params.user_id = user.signonId
   if (tracking && tracking.r_hash) params.r_hash = tracking.r_hash
+
+  if (window.analytics) {
+    window.analytics.track('mopshareclick', {
+      ...params,
+      r_hash: tracking.r_hash || '',
+      user_id: user.signonId || ''
+    })
+  }
 
   if (Config.TRACK_SHARE_URL) {
     fetch(Config.TRACK_SHARE_URL, { // "/record_share_click.html"
