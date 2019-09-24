@@ -293,6 +293,14 @@ export const recordShareClick = (petition, tracking, medium, source, user) => {
   if (user && user.signonId) params.user_id = user.signonId
   if (tracking && tracking.r_hash) params.r_hash = tracking.r_hash
 
+  if (window.analytics) {
+    window.analytics.track('mopshareclick', {
+      ...params,
+      r_hash: tracking.r_hash || '',
+      user_id: user.signonId || ''
+    })
+  }
+
   if (Config.TRACK_SHARE_URL) {
     fetch(Config.TRACK_SHARE_URL, { // "/record_share_click.html"
       method: 'POST',
